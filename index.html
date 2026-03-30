@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>ChestFlow</title>
+        <link rel="stylesheet" href="/src/style.css" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body>
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar__header">
+                <span class="sidebar__title">ChestFlow</span>
+                <button id="toggleSidebar" class="toggle-btn" title="Recolher Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+                </button>
+            </div>
+            
+            <nav class="sidebar__nav">
+                <button class="nav-btn active" data-page="dashboard">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                    <span class="nav-text">Dashboard</span>
+                </button>
+                <button class="nav-btn" data-page="revenues">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a4.5 4.5 0 0 0 0 9H14.5a4.5 4.5 0 0 1 0 9H7"></path></svg>
+                    <span class="nav-text">Receitas</span>
+                </button>
+                <button class="nav-btn" data-page="expenses">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg>
+                    <span class="nav-text">Despesas</span>
+                </button>
+                <button class="nav-btn" data-page="investments">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+                    <span class="nav-text">Investimentos</span>
+                </button>
+                <button class="nav-btn" data-page="reports">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    <span class="nav-text">Relatórios</span>
+                </button>
+            </nav>
+            <div class="sidebar__footer">
+                <button id="themeToggleBtn" class="theme-toggle-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <span class="nav-text">Alternar Tema</span>
+                </button>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <header class="main-header">
+                <h2 id="pageTitle" class="main-header__title">Dashboard</h2>
+                <div class="main-header__controls">
+                    <select id="monthSelector" class="control-select"></select>
+                    <select id="yearSelector" class="control-select"></select>
+                </div>
+            </header>
+            
+            <div class="page-content">
+                <section id="dashboard" class="page"></section>
+                <section id="revenues" class="page hidden"></section>
+                <section id="expenses" class="page hidden"></section>
+                <section id="investments" class="page hidden"></section>
+                <section id="reports" class="page hidden">
+                    <div class="page-header"><h3>Relatórios e Backup</h3></div>
+                    <div class="card">
+                        <p style="margin-bottom: 20px; color: var(--text-light);">Exporte seus dados para backup.</p>
+                        <button id="btnExportCSV" class="btn btn-primary">Baixar Excel (CSV)</button>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <div id="modalEconomia" class="modal-overlay hidden">
+            <div class="modal-content" style="width: 400px;">
+                <h3 style="margin-top: 0">Meta de Economia</h3>
+                <label class="form-label">Quanto você quer guardar por mês?</label>
+                <input id="inputEconomia" type="text" class="form-input" placeholder="Ex: 500,00" />
+                <div class="modal-actions">
+                    <button id="cancelEconomia" class="btn">Cancelar</button>
+                    <button id="saveEconomia" class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </div>
+
+        <script type="module" src="/src/main.js"></script>
+    </body>
+</html>

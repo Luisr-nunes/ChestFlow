@@ -1,0 +1,1 @@
+ALTER TABLE expenses ADD COLUMN emoji TEXT DEFAULT '💰';
