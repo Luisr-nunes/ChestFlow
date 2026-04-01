@@ -1,0 +1,3 @@
+ALTER TABLE expenses ADD COLUMN recorrente INTEGER DEFAULT 0;
+
+ALTER TABLE investments ADD COLUMN recorrente INTEGER DEFAULT 0;

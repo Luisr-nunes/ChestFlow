@@ -1,0 +1,15 @@
+# Dependências JavaScript
+node_modules/
+
+# Build do Rust
+src-tauri/target/
+
+# Build do Vite
+dist/
+
+# Variáveis de ambiente
+.env
+.env.local
+
+# WebView2 installer
+src-tauri/target/release/webview2
