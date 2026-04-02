@@ -20,19 +20,19 @@ export function showConfirmModal(item, onConfirm) {
     let buttons = '';
 
     if (isRecurring) {
-        content = `<h3>Excluir Item Recorrente</h3><p style="margin: 12px 0 24px; opacity: 0.8;">Este item faz parte de uma recorrência. Como deseja prosseguir?</p>`;
+        content = `<h3>Excluir Item Recorrente</h3><p style="margin: 12px 0 24px; color: var(--text-main); opacity: 0.8;">Este item faz parte de uma recorrência. Como deseja prosseguir?</p>`;
         buttons = `
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-                <button id="btnOnlyThis" class="btn-primary" style="background: var(--color-red);">Apenas este mês</button>
-                <button id="btnAllFuture" class="btn-secondary">Este e todos os futuros</button>
-                <button id="btnCancelModal" class="btn-ghost">Cancelar</button>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button id="btnOnlyThis" class="btn" style="background: var(--color-red); color: white !important;">Apenas este mês</button>
+                <button id="btnAllFuture" class="btn" style="background: var(--color-primary); color: #2D3250 !important;">Este e todos os futuros</button>
+                <button id="btnCancelModal" class="btn" style="background: var(--color-blue); color: white !important;">Cancelar</button>
             </div>
         `;
     } else {
         buttons = `
             <div style="display: flex; gap: 12px; justify-content: flex-end;">
-                <button id="btnCancelModal" class="btn-ghost">Cancelar</button>
-                <button id="btnConfirmDelete" class="btn-primary" style="background: var(--color-red);">Excluir</button>
+                <button id="btnCancelModal" class="btn" style="background: var(--color-blue); color: white !important;">Cancelar</button>
+                <button id="btnConfirmDelete" class="btn" style="background: var(--color-red); color: white !important;">Excluir</button>
             </div>
         `;
     }

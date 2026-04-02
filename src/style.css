@@ -351,6 +351,12 @@ input.control-select {
 .modal-content { width: 450px; background: var(--bg-card); padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
 .form-label { display: block; margin-bottom: 5px; font-weight: 600; margin-top: 15px; font-size: 0.9rem; }
 .form-input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-page); color: var(--text-main); font-family: inherit; }
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+}
+
 .modal-actions .btn {
     flex: 1; 
     padding: 12px;

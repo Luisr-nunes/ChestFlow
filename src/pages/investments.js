@@ -143,7 +143,7 @@ export async function initInvestments(container, period) {
 
     showConfirmModal(item, async (mode) => {
         try {
-            await invokeSafe('delete_investment', { id });
+            await invokeSafe('delete_investment', { id, mode });
             showToast('Investimento excluído com sucesso!', 'success');
             loadData(currentPage);
         } catch (err) {

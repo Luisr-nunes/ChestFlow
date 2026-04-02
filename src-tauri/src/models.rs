@@ -74,3 +74,64 @@ pub struct InvestmentPayload {
     pub date_iso: String,
     pub recurring: i64,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PeriodParams {
+    pub month: u32,
+    pub year: i32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ListParams {
+    pub month: u32,
+    pub year: i32,
+    pub page: Option<u32>,
+    pub page_size: Option<u32>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct DeleteParams {
+    pub id: i64,
+    pub mode: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ConfigGetParams {
+    pub key: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ConfigSetParams {
+    pub key: String,
+    pub value: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct UpdateRevenueParams {
+    pub id: i64,
+    pub payload: RevenuePayload,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct UpdateExpenseParams {
+    pub id: i64,
+    pub payload: ExpensePayload,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct UpdateInvestmentParams {
+    pub id: i64,
+    pub payload: InvestmentPayload,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CategoryTotalParams {
+    pub month: u32,
+    pub year: i32,
+    pub subcategory: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct YearParams {
+    pub year: i32,
+}

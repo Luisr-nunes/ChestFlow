@@ -131,7 +131,7 @@ export async function initRevenues(container, period) {
 
     showConfirmModal(item, async (mode) => {
         try {
-            await invokeSafe('delete_revenue', { id });
+            await invokeSafe('delete_revenue', { id, mode });
             showToast('Receita excluída com sucesso!', 'success');
             loadData(currentPage);
         } catch (err) {
@@ -168,7 +168,7 @@ export async function initRevenues(container, period) {
   document.getElementById('btnFilterRev').onclick = () => {
       const dateVal = document.getElementById('filterRevDate').value;
       const catVal = document.getElementById('filterRevCat').value;
-      renderTable(currentData.filter(item => (dateVal ? item.date_iso.startsWith(dateVal) : true) && (catVal ? item.tipo === catVal : true)));
+      renderTable(currentData.filter(item => (dateVal ? item.date_iso.startsWith(dateVal) : true) && (catVal ? item.type === catVal : true)));
   };
 
   document.getElementById('btnClearFilterRev').onclick = () => {

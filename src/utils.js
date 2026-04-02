@@ -1,12 +1,28 @@
-import { invoke } from '@tauri-apps/api/core';
-
-
-
 export async function invokeSafe(command, args = {}) {
+    const RUST_PORT = 5181; // Fixa por enquanto
+    console.log(`Chamando backend (${command}) com args:`, args); // Log de depuração
     try {
-        return await invoke(command, args);
+        const response = await fetch(`http://localhost:${RUST_PORT}/${command}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(args)
+        });
+
+        if (!response.ok) {
+            let errText;
+            try {
+                errText = await response.text();
+            } catch (e) {
+                errText = response.statusText;
+            }
+            throw new Error(errText || `Erro ${response.status}: Falha na resposta do servidor`);
+        }
+
+        return await response.json();
     } catch (error) {
-        console.error(`Erro no Rust ao chamar ${command}:`, error);
+        console.error(`Erro ao chamar o backend (${command}):`, error);
         throw error;
     }
 }
