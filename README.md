@@ -18,6 +18,14 @@
 [![Rust](https://img.shields.io/badge/Rust-core-000000?style=flat-square&logo=rust&logoColor=white)](https://www.rust-lang.org)
 [![SQLite](https://img.shields.io/badge/SQLite-database-003B57?style=flat-square&logo=sqlite&logoColor=white)](https://sqlite.org)
 
+<br>
+
+### Download
+
+[![Download ChestFlow v1.1.0](https://img.shields.io/badge/⬇%EF%B8%8F%20%20Download%20ChestFlow%20v1.1.0%20%20|%20%20Windows%2010%2F11%20%E2%80%94%20Grátis-2ea44f?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Luisr-nunes/ChestFlow/releases/download/v1.0.0/ChestFlow.Setup.1.1.0.exe)
+
+> Clique no botão acima para baixar direto. Sem cadastro, sem assinatura.
+
 </div>
 
 ---
@@ -176,6 +184,14 @@ ChestFlow/
 [PT](#) | **EN**
 
 > Personal offline financial control — fast, secure and cloud-free.
+
+<br>
+
+### Download
+
+[![Download ChestFlow v1.1.0](https://img.shields.io/badge/⬇%EF%B8%8F%20%20Download%20ChestFlow%20v1.1.0%20%20|%20%20Windows%2010%2F11%20—%20Free-2ea44f?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Luisr-nunes/ChestFlow/releases/download/v1.0.0/ChestFlow.Setup.1.1.0.exe)
+
+> Click the button above to download directly. No sign-up, no subscription.
 
 </div>
 
