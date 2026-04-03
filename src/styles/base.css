@@ -1,0 +1,77 @@
+/* ═══════════════════════════════════════════════════════════════
+   Base — Reset, tipografia, scrollbar, utilitários globais
+   ═══════════════════════════════════════════════════════════════ */
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.hidden { display: none !important; }
+
+/* Fix: Garante cor correta dos inputs em ambos os temas */
+input, select, button {
+    color: var(--text-main);
+}
+
+.stat-card__label { color: rgba(255,255,255,0.7); }
+.recent-transaction__date { color: rgba(255,255,255,0.5); }
+.data-table th { color: var(--text-light); }
+
+/* Tema light: ajusta labels que estão dentro de cards brancos */
+html[data-theme="light"] .stat-card__label { color: var(--text-light); }
+html[data-theme="light"] .recent-transaction__date { color: #888; }
+
+/* ─── Date input styling ──────────────────────────────────── */
+input[type="date"] {
+    position: relative;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--text-main);
+    padding-right: 35px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0; left: 0; right: 0; top: 0;
+    position: absolute;
+    width: auto; height: auto;
+    cursor: pointer; color: transparent;
+}
+
+input[type="date"]::after {
+    content: "📅";
+    position: absolute;
+    right: 8px; top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    opacity: 0.6; font-size: 14px;
+    filter: grayscale(1) brightness(var(--calendar-invert));
+}
+
+input[type="date"]:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; transition: background 0.3s; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
+html[data-theme="dark"] ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* ─── Value colors ────────────────────────────────────────── */
+.value--in { color: var(--color-green) !important; }
+.value--out { color: var(--color-red) !important; }
+.value-positive { color: var(--color-green) !important; }
+.value-negative { color: var(--color-red) !important; }

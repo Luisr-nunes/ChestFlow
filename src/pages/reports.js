@@ -1,4 +1,4 @@
-import { invokeSafe } from '../utils.js';
+import { invokeSafe } from '../services/api.js';
 import { showToast } from '../components/toast.js';
 
 export async function initReports(container, period) {
@@ -23,7 +23,8 @@ export async function initReports(container, period) {
             const investments = invRes.data || [];
 
             let csv = "\uFEFFTIPO,DATA,CATEGORIA,VALOR\n";
-            revenues.forEach(x => csv += `RECEITA,${x.date_iso},${x.tipo},${x.amount}\n`);
+            // FIX: usa x.type (campo serializado pelo backend via serde rename)
+            revenues.forEach(x => csv += `RECEITA,${x.date_iso},${x.type},${x.amount}\n`);
             expenses.forEach(x => csv += `DESPESA,${x.date_iso},${x.main_type} - ${x.subcategory},-${x.amount}\n`);
             investments.forEach(x => csv += `INVESTIMENTO,${x.date_iso},${x.main_type} - ${x.category},-${x.amount}\n`);
 

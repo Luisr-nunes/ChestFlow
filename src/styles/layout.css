@@ -1,0 +1,95 @@
+/* ═══════════════════════════════════════════════════════════════
+   Layout — Sidebar, header, page content, grids
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Sidebar ─────────────────────────────────────────────── */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    display: flex; flex-direction: column;
+    padding: 10px 0; flex-shrink: 0;
+    transition: width var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative; overflow: visible; z-index: 1000;
+}
+.sidebar.collapsed { width: var(--sidebar-collapsed-width); }
+
+.sidebar__header {
+    padding: 10px 20px; display: flex;
+    align-items: center; justify-content: space-between; height: 60px;
+}
+.sidebar.collapsed .sidebar__header { padding: 10px 0; justify-content: center; }
+
+.sidebar__title {
+    font-size: 1.6rem; font-weight: 700;
+    white-space: nowrap; transition: opacity 0.2s; overflow: hidden;
+    color: #FFFFFF;
+}
+.sidebar.collapsed .sidebar__title { width: 0; opacity: 0; margin: 0; }
+
+.toggle-btn {
+    background: rgba(255,255,255,0.15); border: none; color: #fff;
+    width: 40px; height: 40px; border-radius: 10px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; flex-shrink: 0;
+}
+.toggle-btn:hover { background: rgba(255,255,255,0.3); }
+
+/* ─── Navigation ──────────────────────────────────────────── */
+.sidebar__nav { display: flex; flex-direction: column; flex-grow: 1; margin-top: 10px; }
+
+.nav-btn {
+    background: none; border: none; color: rgba(255,255,255,0.7);
+    text-align: left; padding: 12px 24px; margin: 4px 0 4px 15px;
+    border-radius: 30px 0 0 30px; cursor: pointer; font-size: 1rem;
+    font-family: inherit; display: flex; align-items: center; gap: 15px;
+    transition: all 0.2s; white-space: nowrap; position: relative; line-height: 1;
+}
+.nav-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
+
+.nav-btn.active {
+    background-color: var(--bg-page); color: var(--text-main);
+    font-weight: 600; margin-right: 0; display: flex; align-items: center;
+}
+.nav-btn.active::before,
+.nav-btn.active::after {
+    content: ""; position: absolute; right: 0; width: 20px; height: 20px;
+    background: transparent; pointer-events: none;
+}
+.nav-btn.active::before { top: -20px; border-radius: 0 0 20px 0; box-shadow: 10px 10px 0 10px var(--bg-page); }
+.nav-btn.active::after { bottom: -20px; border-radius: 0 20px 0 0; box-shadow: 10px -10px 0 10px var(--bg-page); }
+
+/* Sidebar: nav-btn colors stay white since sidebar bg is always dark */
+html[data-theme="light"] .nav-btn.active { color: var(--text-main); }
+
+.sidebar.collapsed .nav-text { display: none; }
+.sidebar.collapsed .nav-btn { padding: 12px 0; justify-content: center; margin-left: 0; border-radius: 0; }
+.sidebar.collapsed .nav-btn.active { margin-right: 0; border-radius: 30px 0 0 30px; margin-left: 10px; }
+
+.nav-icon { flex-shrink: 0; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+.nav-text { padding-top: 2px; }
+
+/* ─── Sidebar footer ──────────────────────────────────────── */
+.sidebar__footer { padding: 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+.theme-toggle-btn {
+    background: rgba(0,0,0,0.2); color: #fff; border: none; padding: 10px;
+    width: 100%; border-radius: 8px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.sidebar.collapsed .theme-toggle-btn span { display: none; }
+
+/* ─── Main content ────────────────────────────────────────── */
+.main-content { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
+.main-header { padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+.main-header__title { margin: 0; font-size: 1.5rem; font-weight: 700; }
+.main-header__controls { display: flex; gap: 10px; }
+.page-content { flex-grow: 1; overflow-y: auto; padding: 0 40px 40px 40px; }
+
+/* ─── Grids ───────────────────────────────────────────────── */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+.bottom-section { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; height: 450px; margin-bottom: 30px; }
+.chart-container, .recent-container { height: 100%; display: flex; flex-direction: column; overflow: hidden; }
+.chart-wrapper { flex-grow: 1; position: relative; width: 100%; height: 100%; }
+
+/* ─── Page header ─────────────────────────────────────────── */
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }

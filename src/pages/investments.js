@@ -1,12 +1,9 @@
-import { invokeSafe, fmtMoney, fmtDate, applyMoneyMask } from '../utils.js';
+import { invokeSafe } from '../services/api.js';
+import { fmtMoney, fmtDate } from '../utils/formatters.js';
+import { applyMoneyMask } from '../utils/masks.js';
 import { showToast } from '../components/toast.js';
 import { showConfirmModal } from '../components/modal.js';
-
-const INVESTMENT_CATEGORIES = {
-  'Renda Fixa': ['CDB', 'Tesouro Direto', 'LCI', 'LCA', 'CRI', 'CRA', 'Debêntures', 'Outros'],
-  'Renda Variável': ['Ações', 'FIIs', 'FIA', 'ETFs', 'BDRs', 'Opções', 'Futuros', 'Câmbio', 'Commodities', 'Outros'],
-  'Criptomoedas': ['Bitcoin', 'Ethereum', 'Solana', 'USDT', 'Dogecoin', 'Cardano', 'Outros']
-};
+import { INVESTMENT_CATEGORIES } from '../config/categories.js';
 
 let currentData = [];
 let currentPage = 1;
@@ -66,10 +63,7 @@ export async function initInvestments(container, period) {
 
   const renderPagination = (res) => {
     const container = document.getElementById('paginationInvestments');
-    if (res.total_pages <= 1) {
-        container.innerHTML = '';
-        return;
-    }
+    if (res.total_pages <= 1) { container.innerHTML = ''; return; }
     container.innerHTML = `
         <button class="pagination-btn" id="prevPage" ${res.page === 1 ? 'disabled' : ''}>← Anterior</button>
         <span style="font-size: 14px; color: var(--text-light);">Página ${res.page} de ${res.total_pages}</span>
@@ -236,10 +230,9 @@ export async function initInvestments(container, period) {
         if(isEdit) await invokeSafe('update_investment', { id: id, payload: payload });
         else await invokeSafe('add_investment', { payload: payload });
         
-        // Dispara geração imediata para o período atual (caso seja recorrente)
         await invokeSafe('generate_recurring', { month: period.month, year: period.year }).catch(() => {});
 
-        showToast(`Investimento ${isEdit ? 'atualizada' : 'salva'} com sucesso!`, 'success');
+        showToast(`Investimento ${isEdit ? 'atualizado' : 'salvo'} com sucesso!`, 'success');
         document.getElementById('modalInvestment').classList.add('hidden');
         loadData(currentPage);
     } catch (err) { showToast("Falha ao salvar: " + err, 'error'); }

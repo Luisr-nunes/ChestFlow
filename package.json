@@ -1,15 +1,13 @@
 {
   "name": "chestflow",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Controle Financeiro Offline",
-  "main": "electron-main.js",
+  "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:5180 && cross-env NODE_ENV=development electron .\"",
-    "electron:build": "npm run build && electron-builder",
-    "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build"
+    "electron:build": "npm run build && electron-builder"
   },
   "build": {
     "appId": "com.chestflow.app",
@@ -19,19 +17,18 @@
     },
     "files": [
       "dist/**/*",
-      "electron-main.js",
-      "electron-preload.js",
-      "src-tauri/icons/icon.ico",
+      "electron/**/*",
+      "assets/**/*",
       "package.json"
     ],
     "extraResources": [
       {
-        "from": "src-tauri/target/release/chestflow-backend.exe",
+        "from": "backend/target/release/chestflow-backend.exe",
         "to": "backend.exe"
       }
     ],
     "win": {
-      "icon": "src-tauri/icons/icon.ico",
+      "icon": "assets/icons/icon.ico",
       "verifyUpdateCodeSignature": false,
       "target": [
         "nsis",
@@ -40,14 +37,9 @@
     }
   },
   "dependencies": {
-    "@tauri-apps/api": "^2.10.1",
-    "@tauri-apps/plugin-shell": "^2.3.5",
-    "chart.js": "^4.4.0",
-    "flatpickr": "^4.6.13"
+    "chart.js": "^4.4.0"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.10.1",
-    "axios": "^1.14.0",
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "electron": "^41.1.1",

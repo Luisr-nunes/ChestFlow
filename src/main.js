@@ -3,15 +3,14 @@ import { initDashboard } from './pages/dashboard.js';
 import { initRevenues } from './pages/revenues.js';
 import { initExpenses } from './pages/expenses.js';
 import { initInvestments } from './pages/investments.js';
-import { getYearsRange } from './utils.js';
+import { getYearsRange } from './utils/formatters.js';
+import { invokeSafe } from './services/api.js';
 
 // Define o período inicial como o mês e ano atual
 window.currentPeriod = {
     month: new Date().getMonth() + 1,
     year: new Date().getFullYear()
 };
-
-console.log(`Iniciando aplicação em: ${window.currentPeriod.month}/${window.currentPeriod.year}`);
 
 const routes = {
     'dashboard':   initDashboard,
@@ -24,17 +23,17 @@ const routes = {
 async function navigate(pageId) {
     const container = document.getElementById(pageId);
     if (!container) return;
-    
+
     document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
     container.classList.remove('hidden');
-    
+
     document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.page === pageId);
     });
-    
+
     const navBtn = document.querySelector(`.nav-btn[data-page="${pageId}"]`);
     if (navBtn) document.getElementById('pageTitle').textContent = navBtn.textContent.trim();
-    
+
     if (routes[pageId]) await routes[pageId](container, window.currentPeriod);
 }
 
@@ -62,12 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const handlePeriodChange = async () => {
             window.currentPeriod.month = parseInt(monthSelector.value);
             window.currentPeriod.year  = parseInt(yearSelector.value);
-            
-            // Avisa o backend para gerar recorrências para o novo mês selecionado
+
             try {
-                await invokeSafe('generate_recurring', { 
-                    month: window.currentPeriod.month, 
-                    year: window.currentPeriod.year 
+                await invokeSafe('generate_recurring', {
+                    month: window.currentPeriod.month,
+                    year: window.currentPeriod.year
                 });
             } catch (e) { console.error("Erro ao gerar recorrências:", e); }
 
@@ -77,8 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         monthSelector.addEventListener('change', handlePeriodChange);
         yearSelector.addEventListener('change', handlePeriodChange);
-        
-        // Reforça a seleção após o carregamento das opções
+
         setTimeout(() => {
             monthSelector.value = window.currentPeriod.month;
             yearSelector.value = window.currentPeriod.year;
@@ -117,9 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Navega para a página inicial
     const initApp = async () => {
         try {
-            await invokeSafe('generate_recurring', { 
-                month: window.currentPeriod.month, 
-                year: window.currentPeriod.year 
+            await invokeSafe('generate_recurring', {
+                month: window.currentPeriod.month,
+                year: window.currentPeriod.year
             });
         } catch (e) { console.error("Erro na carga inicial de recorrências:", e); }
         navigate('dashboard');

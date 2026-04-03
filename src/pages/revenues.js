@@ -1,8 +1,10 @@
-import { invokeSafe, fmtMoney, fmtDate, applyMoneyMask } from '../utils.js';
+import { invokeSafe } from '../services/api.js';
+import { fmtMoney, fmtDate } from '../utils/formatters.js';
+import { applyMoneyMask } from '../utils/masks.js';
 import { showToast } from '../components/toast.js';
 import { showConfirmModal } from '../components/modal.js';
+import { REVENUE_CATEGORIES } from '../config/categories.js';
 
-const REVENUE_CATEGORIES = ['Salário', 'Aluguel', 'Dividendos', 'JCP', 'Venda de Ativo', 'Freelance', 'Reembolso', 'Presente', 'Outros'];
 let currentData = [];
 let currentPage = 1;
 
@@ -60,10 +62,7 @@ export async function initRevenues(container, period) {
 
   const renderPagination = (res) => {
     const container = document.getElementById('paginationRevenues');
-    if (res.total_pages <= 1) {
-        container.innerHTML = '';
-        return;
-    }
+    if (res.total_pages <= 1) { container.innerHTML = ''; return; }
     container.innerHTML = `
         <button class="pagination-btn" id="prevPage" ${res.page === 1 ? 'disabled' : ''}>← Anterior</button>
         <span style="font-size: 14px; color: var(--text-light);">Página ${res.page} de ${res.total_pages}</span>
@@ -150,12 +149,13 @@ export async function initRevenues(container, period) {
       const revType = document.getElementById('revType');
       const revTypeCustom = document.getElementById('revTypeCustom');
       
-      if(REVENUE_CATEGORIES.includes(item.tipo)) {
-          revType.value = item.tipo;
+      // FIX: usa item.type (campo serializado pelo backend) ao invés de item.tipo
+      if(REVENUE_CATEGORIES.includes(item.type)) {
+          revType.value = item.type;
           revTypeCustom.classList.add('hidden');
       } else {
           revType.value = 'Outros';
-          revTypeCustom.value = item.tipo;
+          revTypeCustom.value = item.type;
           revTypeCustom.classList.remove('hidden');
       }
       
@@ -220,7 +220,6 @@ export async function initRevenues(container, period) {
         if(isEdit) await invokeSafe('update_revenue', { id: id, payload: payload });
         else await invokeSafe('add_revenue', { payload: payload });
         
-        // Dispara geração imediata para o período atual (caso seja recorrente)
         await invokeSafe('generate_recurring', { month: period.month, year: period.year }).catch(() => {});
 
         showToast(`Receita ${isEdit ? 'atualizada' : 'salva'} com sucesso!`, 'success');

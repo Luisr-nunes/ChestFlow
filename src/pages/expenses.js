@@ -1,12 +1,9 @@
-import { invokeSafe, fmtMoney, fmtDate, applyMoneyMask } from '../utils.js';
+import { invokeSafe } from '../services/api.js';
+import { fmtMoney, fmtDate } from '../utils/formatters.js';
+import { applyMoneyMask } from '../utils/masks.js';
 import { showToast } from '../components/toast.js';
 import { showConfirmModal } from '../components/modal.js';
-
-const EXPENSE_CATEGORIES = {
-  'Fixa': ['Aluguel', 'Energia', 'Água', 'Internet', 'Condomínio', 'Faculdade', 'Seguro', 'Plano de Saúde', 'Academia', 'Anticoncepcional', 'Parcelamento', 'Empréstimo', 'Feira', 'Streaming', 'Cota Trabalho', 'Outros'],
-  'Variavel': ['Supermercado', 'Farmácia', 'Restaurante', 'Uber', 'Combustível', 'Lazer', 'Telefone', 'Padaria', 'Alimentação Trabalho', 'Cartão de Crédito', 'PIX', 'Barbeiro', 'Tatuagem', 'Suplementos', 'Medicamentos', 'Outros'],
-  'Adicional': ['Presente', 'Viagem', 'Reforma', 'Eletrônicos', 'Vestuário', 'Cinema', 'Bike Itaú', 'Plantas', 'Aquário', 'Perfume', 'Materiais', 'Livros', 'Outros']
-};
+import { EXPENSE_CATEGORIES } from '../config/categories.js';
 
 let currentData = [];
 let currentPage = 1;
@@ -273,7 +270,6 @@ export async function initExpenses(container, period) {
       if (isEdit) await invokeSafe('update_expense', { id: id, payload: payload });
       else await invokeSafe('add_expense', { payload: payload });
 
-      // Dispara geração imediata para o período atual (caso seja recorrente)
       await invokeSafe('generate_recurring', { month: period.month, year: period.year }).catch(() => { });
 
       showToast(`Despesa ${isEdit ? 'atualizada' : 'salva'} com sucesso!`, 'success');

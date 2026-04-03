@@ -4,11 +4,12 @@ node_modules/
 # Build outputs
 dist/
 dist-electron/
-src-tauri/target/
+backend/target/
 
-# WebView2 Binaries (Heavy files)
-src-tauri/WebView2/
-src-tauri/temp_web/
+# Logs and Env vars
+*.log
+.env
+.env.*
 
 # Database files
 *.db
@@ -18,12 +19,10 @@ src-tauri/temp_web/
 # OS generated files
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # IDE files
 .vscode/
 .idea/
 *.swp
 *.bak
-
-# Production resources
-src-tauri/target/release/

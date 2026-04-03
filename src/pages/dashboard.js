@@ -1,5 +1,7 @@
-import { invokeSafe, fmtMoney, fmtDate, applyMoneyMask } from '../utils.js';
-import { getCategoryConfig } from '../categories.js';
+import { invokeSafe } from '../services/api.js';
+import { fmtMoney, fmtDate } from '../utils/formatters.js';
+import { applyMoneyMask } from '../utils/masks.js';
+import { getCategoryConfig } from '../config/categories.js';
 
 let monthlyHistoryChart, expensePieChart, revenuePieChart;
 
@@ -96,17 +98,17 @@ function initCharts() {
             legend: { position: 'bottom', labels: { color: colorText, usePointStyle: true, boxWidth: 8, font: { family: "'Raleway', sans-serif", size: 12 } } }
         }
     };
-const ctxHist = document.getElementById('monthlyHistoryChart')?.getContext('2d');
-if (ctxHist) {
-    if (monthlyHistoryChart) monthlyHistoryChart.destroy();
-    monthlyHistoryChart = new Chart(ctxHist, {
-        type: 'bar',
-        data: { labels: [], datasets: [
-            { label: 'Receita', data: [], backgroundColor: '#04930e', borderRadius: 4 },
-            { label: 'Saídas', data: [], backgroundColor: '#bf8441', borderRadius: 4 }
-        ]},
-        options: {
 
+    const ctxHist = document.getElementById('monthlyHistoryChart')?.getContext('2d');
+    if (ctxHist) {
+        if (monthlyHistoryChart) monthlyHistoryChart.destroy();
+        monthlyHistoryChart = new Chart(ctxHist, {
+            type: 'bar',
+            data: { labels: [], datasets: [
+                { label: 'Receita', data: [], backgroundColor: '#04930e', borderRadius: 4 },
+                { label: 'Saídas', data: [], backgroundColor: '#bf8441', borderRadius: 4 }
+            ]},
+            options: {
                 scales: {
                     x: { grid: { display: false }, ticks: { color: colorText, font: { family: "'Raleway', sans-serif" } } },
                     y: { grid: { color: gridColor }, ticks: { color: colorText, font: { family: "'Raleway', sans-serif" } } }
