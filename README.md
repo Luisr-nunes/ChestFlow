@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="src-tauri/icons/icon.png" alt="ChestFlow Logo" width="120" />
+<img width="100" src="https://raw.githubusercontent.com/Luisr-nunes/ChestFlow/main/assets/icons/icon.png" alt="ChestFlow Logo" onerror="this.style.display='none'"/>
 
 # ChestFlow
 
@@ -8,129 +8,95 @@
 
 > Controle financeiro pessoal offline — rápido, seguro e sem depender da nuvem.
 
-[![Version](https://img.shields.io/badge/version-1.0.0--beta-orange?style=flat-square)](https://github.com/Luisr-nunes/chestflow/releases)
-[![Platform](https://img.shields.io/badge/platform-Windows-blue?style=flat-square&logo=windows)](https://github.com/Luisr-nunes/chestflow/releases)
-[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
-[![Tauri](https://img.shields.io/badge/Tauri-2.0-24C8D8?style=flat-square&logo=tauri&logoColor=white)](https://tauri.app)
-[![Rust](https://img.shields.io/badge/Rust-backend-000000?style=flat-square&logo=rust&logoColor=white)](https://www.rust-lang.org)
+<br>
+
+[![Version](https://img.shields.io/badge/version-1.0.0--beta-orange?style=flat-square)](https://github.com/Luisr-nunes/ChestFlow/releases)
+[![Platform](https://img.shields.io/badge/platform-Windows-blue?style=flat-square&logo=windows)](https://github.com/Luisr-nunes/ChestFlow/releases)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://github.com/Luisr-nunes/ChestFlow/blob/main/LICENSE)
+[![Electron](https://img.shields.io/badge/Electron-desktop-47848F?style=flat-square&logo=electron&logoColor=white)](https://www.electronjs.org)
+[![Node.js](https://img.shields.io/badge/Node.js-backend-339933?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
+[![Rust](https://img.shields.io/badge/Rust-core-000000?style=flat-square&logo=rust&logoColor=white)](https://www.rust-lang.org)
+[![SQLite](https://img.shields.io/badge/SQLite-database-003B57?style=flat-square&logo=sqlite&logoColor=white)](https://sqlite.org)
 
 </div>
 
 ---
 
-##  Sobre o Projeto
+## Sobre o Projeto
 
-O **ChestFlow** é um aplicativo desktop de controle financeiro pessoal desenvolvido para funcionar 100% offline. Todos os dados ficam armazenados localmente no seu computador — nenhuma informação é enviada para servidores externos.
+O **ChestFlow** é um aplicativo desktop de controle financeiro pessoal desenvolvido para funcionar **100% offline**. Todos os dados ficam armazenados localmente no seu computador — nenhuma informação é enviada para servidores externos.
 
-Desenvolvido com **Tauri 2** e **Rust** no backend, oferece desempenho nativo com instalador leve e consumo mínimo de memória comparado a soluções baseadas em Electron.
+Construído com **Electron** para a camada desktop e interface, **Node.js** para a lógica de aplicação e **Rust** no núcleo do backend, garantindo desempenho sólido com armazenamento seguro via SQLite.
 
 ---
 
-##  Funcionalidades
+## Funcionalidades
 
-###  Receitas
+### Receitas
 - Cadastro de receitas com tipo, valor e data
-- Suporte a lançamentos recorrentes (repetição automática todo mês)
+- Suporte a lançamentos recorrentes (repetição automática mensal)
 - Filtros por categoria e data
-- Edição e exclusão com confirmação
 
-###  Despesas
+### Despesas
 - Categorização em três grupos: **Fixa**, **Variável** e **Adicional**
 - Subcategorias detalhadas (Aluguel, Supermercado, Uber, Lazer, etc.)
 - Suporte a categorias personalizadas
 - Lançamentos recorrentes com geração automática mensal
 - Filtro por categoria com exibição do total gasto no mês
 
-###  Investimentos
-- Registro de investimentos por tipo: Renda Fixa, Renda Variável e Criptomoedas
+### Investimentos
+- Registro por tipo: Renda Fixa, Renda Variável e Criptomoedas
 - Subcategorias específicas (CDB, Tesouro Direto, Ações, FIIs, Bitcoin, etc.)
 - Suporte a aportes recorrentes
 
-###  Dashboard
+### Dashboard
 - Resumo do mês: Receita, Despesas, Investido e Saldo
 - **"Seguro para Gastar"**: saldo disponível após descontar a meta de economia
-- Gráfico de barras com histórico anual de receitas vs saídas
+- Gráfico anual de receitas vs saídas
 - Gráfico de composição das despesas (Fixa / Variável / Adicional)
-- Gráfico de detalhamento por subcategoria (top 8 categorias)
-- Lista das 7 transações mais recentes do mês
+- Top 8 subcategorias de gastos
+- Lista das 7 transações mais recentes
 
-###  Configurações
+### Configurações
 - Meta de economia mensal configurável
 - Alternância entre tema claro e escuro
-- Navegação por mês e ano com seletor global
+- Seletor global de mês/ano
 
-###  Exportação
+### Exportação
 - Exportação dos dados do mês em formato **CSV**
 
 ---
 
-##  Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 | Camada | Tecnologia | Descrição |
-|--------|-----------|-----------|
-| Framework Desktop | **Tauri 2** | Framework para apps desktop leves e seguros |
-| Backend | **Rust** | Lógica de negócio, banco de dados e comandos IPC |
-| Banco de Dados | **SQLite** (rusqlite) | Armazenamento local via rusqlite com feature bundled |
+|---|---|---|
+| Framework Desktop | **Electron** | Wrapper desktop cross-platform via Chromium + Node |
+| Lógica de Aplicação | **Node.js** | IPC, orquestração e comunicação entre processos |
+| Core / Backend | **Rust** | Lógica de negócio de alta performance |
+| Banco de Dados | **SQLite** | Armazenamento local via binding Rust |
 | Frontend | **JavaScript ES Modules** | Interface modular organizada por página |
-| Bundler | **Vite 5** | Build e hot-reload do frontend |
+| Bundler | **Vite** | Build e hot-reload do frontend |
 | Gráficos | **Chart.js 4** | Visualizações de dados financeiros |
 | Estilo | **CSS3 + Variables** | Design system com suporte a tema claro/escuro |
 
-### Por que Tauri + Rust?
-
-- **Performance**: backend em Rust compilado nativamente, sem overhead do Node.js
-- **Tamanho**: instalador ~195MB (incluindo WebView2) vs ~300MB+ do Electron
-- **Segurança**: dados armazenados localmente, sem telemetria, sem nuvem
-- **Perfil no GitHub**: Rust contabiliza como linguagem no repositório
-
 ---
 
-##  Escolhas de UX e Design
-
-### Layout
-- Estrutura de **duas colunas**: sidebar fixa à esquerda + área de conteúdo à direita
-- Navegação lateral com indicador de página ativa
-- Seletor de mês/ano global no cabeçalho, disponível em todas as telas
-
-### Hierarquia Visual
-- Cards de resumo com codificação por cor: verde (receita), vermelho (despesas), azul (investimentos), roxo (saldo)
-- Card "Seguro para Gastar" em largura total com destaque de meta
-- Valores negativos exibidos em vermelho, positivos em verde
-
-### Tema
-- Suporte nativo a **tema claro e escuro**
-- Preferência persistida localmente entre sessões
-- CSS Variables para troca instantânea de tema sem reload
-
-### Categorias
-- Sistema hierárquico: tipo principal → subcategoria
-- Opção "Outros" com campo de texto livre para categorias não listadas
-- Cores únicas por categoria nos gráficos de detalhamento
-
-### Feedback
-- Notificações **toast** não-bloqueantes para confirmação de ações
-- Badges visuais identificando lançamentos recorrentes nas tabelas
-- Mensagens de estado vazio em todas as listagens
-
----
-
-##  Como Instalar (Testers)
+## Como Instalar (Testers)
 
 > Não é necessário instalar Node.js, Rust ou qualquer ferramenta de desenvolvimento.
 
-1. Acesse a página de [Releases](https://github.com/Luisr-nunes/chestflow/releases)
-2. Baixe o arquivo `ChestFlow_1.0.0_x64_en-US.zip`
-3. Extraia o arquivo `.zip`
-4. Clique duas vezes no arquivo `.msi`
-5. Se aparecer aviso de segurança do Windows, clique em **Mais informações → Executar assim mesmo**
-6. Siga o instalador normalmente
-7. O ChestFlow aparecerá no menu Iniciar
+1. Acesse a página de [**Releases**](https://github.com/Luisr-nunes/ChestFlow/releases)
+2. Baixe o instalador mais recente (`.exe` ou `.zip`)
+3. Execute o instalador e siga os passos
+4. Se aparecer aviso de segurança do Windows, clique em **Mais informações → Executar assim mesmo**
+5. O ChestFlow aparecerá no menu Iniciar
 
 > **Requisito:** Windows 10/11 64-bit
 
 ---
 
-##  Como Rodar o Código (Desenvolvedores)
+## Como Rodar o Código (Desenvolvedores)
 
 ### Pré-requisitos
 
@@ -142,8 +108,8 @@ Desenvolvido com **Tauri 2** e **Rust** no backend, oferece desempenho nativo co
 
 ```bash
 # Clone o repositório
-git clone https://github.com/Luisr-nunes/chestflow.git
-cd chestflow
+git clone https://github.com/Luisr-nunes/ChestFlow.git
+cd ChestFlow
 
 # Instale as dependências JavaScript
 npm install
@@ -153,64 +119,57 @@ npm install
 
 ```bash
 # Modo desenvolvimento com hot-reload
-npm run tauri:dev
+npm run dev
 ```
-
-> A primeira execução demora entre 5 e 10 minutos para compilar as dependências Rust. As próximas são rápidas.
 
 ### Build de Produção
 
 ```bash
-# Gera o instalador .msi em src-tauri/target/release/bundle/msi/
-npm run tauri:build
+# Gera o instalador na pasta dist/
+npm run build
 ```
 
 ---
 
-##  Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
-chestflow/
+ChestFlow/
+├── assets/
+│   └── icons/                # Ícones do aplicativo
+├── backend/                  # Core em Rust
+│   └── src/                  # Lógica de negócio, banco de dados e modelos
+├── electron/                 # Processo principal do Electron
+│   └── main.js               # Entry point, IPC e ciclo de vida do app
 ├── src/                      # Frontend JavaScript
-│   ├── main.js               # Entry point e navegação
-│   ├── utils.js              # Helpers (invoke, formatadores)
-│   ├── categories.js         # Configuração de categorias e cores
-│   ├── pages/
-│   │   ├── dashboard.js      # Página do dashboard
-│   │   ├── revenues.js       # Página de receitas
-│   │   ├── expenses.js       # Página de despesas
-│   │   ├── investments.js    # Página de investimentos
-│   │   └── reports.js        # Exportação de dados
-│   └── components/
-│       ├── toast.js          # Notificações
-│       ├── modal.js          # Modais de formulário
-│       └── charts.js         # Configuração dos gráficos
-├── src-tauri/                # Backend Rust
-│   ├── src/
-│   │   ├── main.rs           # Entry point Tauri
-│   │   ├── commands.rs       # Comandos IPC expostos ao frontend
-│   │   ├── db.rs             # Banco de dados e recorrência
-│   │   └── models.rs         # Structs de dados
-│   ├── Cargo.toml            # Dependências Rust
-│   └── tauri.conf.json       # Configuração do app
+│   ├── main.js               # Navegação e entry point da UI
+│   ├── pages/                # Módulos de cada tela (dashboard, receitas, etc.)
+│   └── components/           # Componentes reutilizáveis (toast, modal, charts)
 ├── index.html                # HTML principal
-├── style.css                 # Estilos globais
-└── vite.config.js            # Configuração do Vite
+├── vite.config.js            # Configuração do Vite
+└── package.json              # Dependências e scripts
 ```
 
 ---
 
-##  Desenvolvido por
-
-**Luis Nunes** — [@Luisr-nunes](https://github.com/Luisr-nunes)
-
----
-
----
+## Desenvolvido por
 
 <div align="center">
 
-<a name="english-version"></a>
+**Luis Nunes**
+
+[![GitHub](https://img.shields.io/badge/GitHub-Luisr--nunes-181717?style=flat-square&logo=github)](https://github.com/Luisr-nunes)
+
+</div>
+
+---
+
+<br>
+<br>
+
+---
+
+<div align="center" id="english-version">
 
 # ChestFlow
 
@@ -222,93 +181,80 @@ chestflow/
 
 ---
 
-##  About
+## About
 
-**ChestFlow** is a desktop personal finance app built to work 100% offline. All data is stored locally on your computer — no information is sent to external servers.
+**ChestFlow** is a desktop personal finance app built to work **100% offline**. All data is stored locally on your computer — no information is sent to external servers.
 
-Built with **Tauri 2** and **Rust** on the backend, it delivers native performance with a lightweight installer and minimal memory usage compared to Electron-based solutions.
+Built with **Electron** for the desktop and UI layer, **Node.js** for application logic, and **Rust** at the backend core, delivering solid performance with secure local storage via SQLite.
 
 ---
 
-##  Features
+## Features
 
-###  Revenues
+### Revenues
 - Register revenues with type, amount and date
 - Recurring entries (auto-generated every month)
 - Filter by category and date
 
-###  Expenses
+### Expenses
 - Three groups: **Fixed**, **Variable** and **Additional**
 - Detailed subcategories (Rent, Supermarket, Uber, Leisure, etc.)
 - Custom categories support
 - Recurring expenses with automatic monthly generation
-- Category filter with monthly total display
 
-###  Investments
-- Track investments by type: Fixed Income, Variable Income and Cryptocurrencies
+### Investments
+- Track by type: Fixed Income, Variable Income and Cryptocurrencies
 - Specific subcategories (CDB, Treasury, Stocks, REITs, Bitcoin, etc.)
 - Recurring contributions support
 
-###  Dashboard
+### Dashboard
 - Monthly summary: Revenue, Expenses, Invested and Balance
 - **"Safe to Spend"**: available balance after subtracting savings goal
 - Annual bar chart: revenues vs expenses
 - Expense composition chart (Fixed / Variable / Additional)
-- Subcategory breakdown chart (top 8)
+- Top 8 subcategory breakdown
 - Last 7 transactions list
 
-###  Settings
+### Settings
 - Configurable monthly savings goal
 - Light and dark theme toggle
 - Global month/year selector
 
-###  Export
+### Export
 - Export monthly data as **CSV**
 
 ---
 
-##  Tech Stack
+## Tech Stack
 
 | Layer | Technology | Description |
-|-------|-----------|-------------|
-| Desktop Framework | **Tauri 2** | Lightweight and secure desktop app framework |
-| Backend | **Rust** | Business logic, database and IPC commands |
-| Database | **SQLite** (rusqlite) | Local storage via rusqlite with bundled feature |
-| Frontend | **JavaScript ES Modules** | Modular interface organized by page |
-| Bundler | **Vite 5** | Frontend build and hot-reload |
+|---|---|---|
+| Desktop Framework | **Electron** | Cross-platform desktop via Chromium + Node |
+| App Logic | **Node.js** | IPC, orchestration and inter-process communication |
+| Core / Backend | **Rust** | High-performance business logic |
+| Database | **SQLite** | Local storage via Rust binding |
+| Frontend | **JavaScript ES Modules** | Modular UI organized by page |
+| Bundler | **Vite** | Frontend build and hot-reload |
 | Charts | **Chart.js 4** | Financial data visualizations |
 | Styling | **CSS3 + Variables** | Design system with light/dark theme support |
 
 ---
 
-##  UX & Design Choices
-
-- **Two-column layout**: fixed sidebar + content area
-- Color-coded summary cards: green (revenue), red (expenses), blue (investments), purple (balance)
-- Native **light and dark theme** support with persistent preference
-- **Toast notifications** for non-blocking action feedback
-- Visual badges identifying recurring entries in tables
-- Hierarchical category system with custom category support
-
----
-
-##  How to Install (Testers)
+## How to Install (Testers)
 
 > No Node.js, Rust or developer tools required.
 
-1. Go to [Releases](https://github.com/Luisr-nunes/chestflow/releases)
-2. Download `ChestFlow_1.0.0_x64_en-US.zip`
-3. Extract the `.zip` file
-4. Double-click the `.msi` file
-5. If a Windows security warning appears, click **More info → Run anyway**
-6. Follow the installer steps
-7. ChestFlow will appear in the Start menu
+1. Go to the [**Releases**](https://github.com/Luisr-nunes/ChestFlow/releases) page
+2. Download the latest installer (`.exe` or `.zip`)
+3. Run the installer and follow the steps
+4. If a Windows security warning appears, click **More info → Run anyway**
+5. ChestFlow will appear in the Start menu
 
 > **Requirement:** Windows 10/11 64-bit
 
 ---
 
-##  How to Run the Code (Developers)
+## How to Run the Code (Developers)
 
 ### Prerequisites
 
@@ -320,8 +266,8 @@ Built with **Tauri 2** and **Rust** on the backend, it delivers native performan
 
 ```bash
 # Clone the repository
-git clone https://github.com/Luisr-nunes/chestflow.git
-cd chestflow
+git clone https://github.com/Luisr-nunes/ChestFlow.git
+cd ChestFlow
 
 # Install JavaScript dependencies
 npm install
@@ -331,16 +277,14 @@ npm install
 
 ```bash
 # Development mode with hot-reload
-npm run tauri:dev
+npm run dev
 ```
-
-> The first run takes 5–10 minutes to compile Rust dependencies. Subsequent runs are fast.
 
 ### Production Build
 
 ```bash
-# Generates the .msi installer in src-tauri/target/release/bundle/msi/
-npm run tauri:build
+# Generates the installer in dist/
+npm run build
 ```
 
 ---
@@ -348,36 +292,30 @@ npm run tauri:build
 ## Project Structure
 
 ```
-chestflow/
+ChestFlow/
+├── assets/
+│   └── icons/                # App icons
+├── backend/                  # Rust core
+│   └── src/                  # Business logic, database and models
+├── electron/                 # Electron main process
+│   └── main.js               # Entry point, IPC and app lifecycle
 ├── src/                      # JavaScript frontend
-│   ├── main.js               # Entry point and navigation
-│   ├── utils.js              # Helpers (invoke, formatters)
-│   ├── categories.js         # Category config and colors
-│   ├── pages/
-│   │   ├── dashboard.js      # Dashboard page
-│   │   ├── revenues.js       # Revenues page
-│   │   ├── expenses.js       # Expenses page
-│   │   ├── investments.js    # Investments page
-│   │   └── reports.js        # Data export
-│   └── components/
-│       ├── toast.js          # Notifications
-│       ├── modal.js          # Form modals
-│       └── charts.js         # Chart configuration
-├── src-tauri/                # Rust backend
-│   ├── src/
-│   │   ├── main.rs           # Tauri entry point
-│   │   ├── commands.rs       # IPC commands exposed to frontend
-│   │   ├── db.rs             # Database and recurrence logic
-│   │   └── models.rs         # Data structs
-│   ├── Cargo.toml            # Rust dependencies
-│   └── tauri.conf.json       # App configuration
+│   ├── main.js               # Navigation and UI entry point
+│   ├── pages/                # Page modules (dashboard, revenues, etc.)
+│   └── components/           # Reusable components (toast, modal, charts)
 ├── index.html                # Main HTML
-├── style.css                 # Global styles
-└── vite.config.js            # Vite configuration
+├── vite.config.js            # Vite configuration
+└── package.json              # Dependencies and scripts
 ```
 
 ---
 
-##  Developed by
+## Developed by
 
-**Luis Nunes** — [@Luisr-nunes](https://github.com/Luisr-nunes)
+<div align="center">
+
+**Luis Nunes**
+
+[![GitHub](https://img.shields.io/badge/GitHub-Luisr--nunes-181717?style=flat-square&logo=github)](https://github.com/Luisr-nunes)
+
+</div>
