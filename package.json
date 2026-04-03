@@ -32,6 +32,7 @@
     ],
     "win": {
       "icon": "src-tauri/icons/icon.ico",
+      "verifyUpdateCodeSignature": false,
       "target": [
         "nsis",
         "portable"

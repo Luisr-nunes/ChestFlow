@@ -236,6 +236,9 @@ export async function initInvestments(container, period) {
         if(isEdit) await invokeSafe('update_investment', { id: id, payload: payload });
         else await invokeSafe('add_investment', { payload: payload });
         
+        // Dispara geração imediata para o período atual (caso seja recorrente)
+        await invokeSafe('generate_recurring', { month: period.month, year: period.year }).catch(() => {});
+
         showToast(`Investimento ${isEdit ? 'atualizada' : 'salva'} com sucesso!`, 'success');
         document.getElementById('modalInvestment').classList.add('hidden');
         loadData(currentPage);

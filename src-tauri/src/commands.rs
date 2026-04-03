@@ -70,7 +70,7 @@ pub async fn delete_revenue_http(db: Db, Json(params): Json<DeleteParams>) -> Re
         if info.0 == 0 && info.1.is_some() {
             let month_key = &info.2[0..7];
             conn.execute(
-                "INSERT OR IGNORE INTO recurring_deletions (source_id, deleted_for_month) VALUES (?1, ?2)",
+                "INSERT OR IGNORE INTO recurring_deletions (source_id, record_type, deleted_for_month) VALUES (?1, 'revenue', ?2)",
                 params![info.1, month_key]
             ).map_err(db_error)?;
         }
@@ -149,7 +149,7 @@ pub async fn delete_expense_http(db: Db, Json(params): Json<DeleteParams>) -> Re
         if info.0 == 0 && info.1.is_some() {
             let month_key = &info.2[0..7];
             conn.execute(
-                "INSERT OR IGNORE INTO recurring_deletions (source_id, deleted_for_month) VALUES (?1, ?2)",
+                "INSERT OR IGNORE INTO recurring_deletions (source_id, record_type, deleted_for_month) VALUES (?1, 'expense', ?2)",
                 params![info.1, month_key]
             ).map_err(db_error)?;
         }
@@ -202,7 +202,7 @@ pub async fn delete_investment_http(db: Db, Json(params): Json<DeleteParams>) ->
         if info.0 == 0 && info.1.is_some() {
             let month_key = &info.2[0..7];
             conn.execute(
-                "INSERT OR IGNORE INTO recurring_deletions (source_id, deleted_for_month) VALUES (?1, ?2)",
+                "INSERT OR IGNORE INTO recurring_deletions (source_id, record_type, deleted_for_month) VALUES (?1, 'investment', ?2)",
                 params![info.1, month_key]
             ).map_err(db_error)?;
         }

@@ -59,9 +59,18 @@ document.addEventListener('DOMContentLoaded', () => {
         monthSelector.value = window.currentPeriod.month;
         yearSelector.value  = window.currentPeriod.year;
 
-        const handlePeriodChange = () => {
+        const handlePeriodChange = async () => {
             window.currentPeriod.month = parseInt(monthSelector.value);
             window.currentPeriod.year  = parseInt(yearSelector.value);
+            
+            // Avisa o backend para gerar recorrências para o novo mês selecionado
+            try {
+                await invokeSafe('generate_recurring', { 
+                    month: window.currentPeriod.month, 
+                    year: window.currentPeriod.year 
+                });
+            } catch (e) { console.error("Erro ao gerar recorrências:", e); }
+
             const activeBtn = document.querySelector('.nav-btn.active');
             if (activeBtn) navigate(activeBtn.dataset.page);
         };
@@ -106,5 +115,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Navega para a página inicial
-    navigate('dashboard');
+    const initApp = async () => {
+        try {
+            await invokeSafe('generate_recurring', { 
+                month: window.currentPeriod.month, 
+                year: window.currentPeriod.year 
+            });
+        } catch (e) { console.error("Erro na carga inicial de recorrências:", e); }
+        navigate('dashboard');
+    };
+
+    initApp();
 });

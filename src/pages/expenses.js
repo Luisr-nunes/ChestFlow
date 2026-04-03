@@ -15,56 +15,56 @@ let totalPages = 1;
 export async function initExpenses(container, period) {
   const loadData = async (page = 1) => {
     try {
-        const res = await invokeSafe('list_expenses', { month: period.month, year: period.year, page, page_size: 20 });
-        currentData = res.data;
-        currentPage = res.page;
-        totalPages = res.total_pages;
-        updateCategoryFilter();
-        renderTable(currentData);
-        renderPagination(res);
-        updateCategoryTotal(); 
+      const res = await invokeSafe('list_expenses', { month: period.month, year: period.year, page, page_size: 20 });
+      currentData = res.data;
+      currentPage = res.page;
+      totalPages = res.total_pages;
+      updateCategoryFilter();
+      renderTable(currentData);
+      renderPagination(res);
+      updateCategoryTotal();
     } catch (err) { console.error(err); }
   };
 
   const updateCategoryFilter = () => {
-      const select = document.getElementById('filterExpCat');
-      const currentVal = select.value;
-      const uniqueCats = [...new Set(currentData.map(item => item.subcategory))].sort();
-      select.innerHTML = '<option value="">Todas Categorias</option>' + uniqueCats.map(c => `<option value="${c}">${c}</option>`).join('');
-      select.value = currentVal;
+    const select = document.getElementById('filterExpCat');
+    const currentVal = select.value;
+    const uniqueCats = [...new Set(currentData.map(item => item.subcategory))].sort();
+    select.innerHTML = '<option value="">Todas Categorias</option>' + uniqueCats.map(c => `<option value="${c}">${c}</option>`).join('');
+    select.value = currentVal;
   };
 
   const updateCategoryTotal = async () => {
     const catVal = document.getElementById('filterExpCat').value;
     const banner = document.getElementById('categoryTotalBanner');
     if (!catVal) {
-        banner.classList.add('hidden');
-        return;
+      banner.classList.add('hidden');
+      return;
     }
     try {
-        const total = await invokeSafe('get_category_total', { month: period.month, year: period.year, subcategory: catVal });
-        banner.innerHTML = `<span>Total de <strong>${catVal}</strong> em ${period.month}/${period.year}:</span> <strong>${fmtMoney(total)}</strong>`;
-        banner.classList.remove('hidden');
+      const total = await invokeSafe('get_category_total', { month: period.month, year: period.year, subcategory: catVal });
+      banner.innerHTML = `<span>Total de <strong>${catVal}</strong> em ${period.month}/${period.year}:</span> <strong>${fmtMoney(total)}</strong>`;
+      banner.classList.remove('hidden');
     } catch (err) { console.error(err); }
   };
 
   const renderTable = (data) => {
-      const tbody = document.getElementById('expensesTableBody');
-      if (data.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px; color: var(--text-light);">Nenhum registro.</td></tr>';
-          return;
+    const tbody = document.getElementById('expensesTableBody');
+    if (data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px; color: var(--text-light);">Nenhum registro.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.map(r => {
+      let badge = '';
+      if (r.recurring === 1) {
+        badge = `<span class="badge-recurring">↻ recorrente</span>`;
+      } else if (r.recurring_source_id) {
+        badge = `<span class="badge-generated" title="Gerado automaticamente">↻</span>`;
+      } else if (r.total_installments > 1) {
+        badge = `<span class="badge-generated" style="background:rgba(52,152,219,0.1);color:#3498db"># ${r.installment_number}/${r.total_installments}</span>`;
       }
-      tbody.innerHTML = data.map(r => {
-        let badge = '';
-        if (r.recurring === 1) {
-            badge = `<span class="badge-recurring">↻ recorrente</span>`;
-        } else if (r.recurring_source_id) {
-            badge = `<span class="badge-generated" title="Gerado automaticamente">↻</span>`;
-        } else if (r.total_installments > 1) {
-            badge = `<span class="badge-generated" style="background:rgba(52,152,219,0.1);color:#3498db"># ${r.installment_number}/${r.total_installments}</span>`;
-        }
 
-        return `
+      return `
         <tr>
           <td>${fmtDate(r.date_iso)}</td>
           <td>
@@ -166,15 +166,15 @@ export async function initExpenses(container, period) {
   const recCheck = document.getElementById('expRecurring');
 
   instInput.oninput = () => {
-      const v = parseInt(instInput.value) || 1;
-      instHint.textContent = v > 1 ? `Criará ${v} lançamentos mensais` : 'Lançamento único';
-      if (v > 1) { recCheck.checked = false; document.getElementById('recurringSection').style.opacity = '0.5'; }
-      else { document.getElementById('recurringSection').style.opacity = '1'; }
+    const v = parseInt(instInput.value) || 1;
+    instHint.textContent = v > 1 ? `Criará ${v} lançamentos mensais` : 'Lançamento único';
+    if (v > 1) { recCheck.checked = false; document.getElementById('recurringSection').style.opacity = '0.5'; }
+    else { document.getElementById('recurringSection').style.opacity = '1'; }
   };
 
   recCheck.onchange = () => {
-      if (recCheck.checked) { instInput.value = 1; instHint.textContent = 'Lançamento único'; document.getElementById('installmentsSection').style.opacity = '0.5'; }
-      else { document.getElementById('installmentsSection').style.opacity = '1'; }
+    if (recCheck.checked) { instInput.value = 1; instHint.textContent = 'Lançamento único'; document.getElementById('installmentsSection').style.opacity = '0.5'; }
+    else { document.getElementById('installmentsSection').style.opacity = '1'; }
   };
 
   window.deleteExpense = (id) => {
@@ -182,11 +182,11 @@ export async function initExpenses(container, period) {
     if (!item) return;
 
     showConfirmModal(item, async (mode) => {
-        try {
-            await invokeSafe('delete_expense', { id, mode });
-            showToast('Despesa excluída com sucesso!', 'success');
-            loadData(currentPage);
-        } catch (err) { showToast('Erro ao excluir: ' + err, 'error'); }
+      try {
+        await invokeSafe('delete_expense', { id, mode });
+        showToast('Despesa excluída com sucesso!', 'success');
+        loadData(currentPage);
+      } catch (err) { showToast('Erro ao excluir: ' + err, 'error'); }
     });
   };
 
@@ -204,38 +204,38 @@ export async function initExpenses(container, period) {
 
   mainType.addEventListener('change', () => updateSubcategories());
   subCategory.addEventListener('change', () => {
-    if (subCategory.value === 'Outros') { subCustom.classList.remove('hidden'); subCustom.required = true; } 
+    if (subCategory.value === 'Outros') { subCustom.classList.remove('hidden'); subCustom.required = true; }
     else { subCustom.classList.add('hidden'); subCustom.required = false; }
   });
 
   window.editExpense = (id) => {
-      const item = currentData.find(x => x.id === id);
-      if(!item) return;
-      document.getElementById('modalExpTitle').textContent = 'Editar Despesa';
-      document.getElementById('formExpense').dataset.id = item.id;
-      mainType.value = item.main_type;
-      updateSubcategories(item.subcategory);
-      document.getElementById('expAmount').value = item.amount.toFixed(2).replace('.', ',');
-      document.getElementById('expDate').value = item.date_iso;
-      document.getElementById('expRecurring').checked = !!item.recurring;
-      document.getElementById('expInstallments').value = 1;
-      document.getElementById('installmentsSection').classList.add('hidden'); 
-      document.getElementById('modalExpense').classList.remove('hidden');
+    const item = currentData.find(x => x.id === id);
+    if (!item) return;
+    document.getElementById('modalExpTitle').textContent = 'Editar Despesa';
+    document.getElementById('formExpense').dataset.id = item.id;
+    mainType.value = item.main_type;
+    updateSubcategories(item.subcategory);
+    document.getElementById('expAmount').value = item.amount.toFixed(2).replace('.', ',');
+    document.getElementById('expDate').value = item.date_iso;
+    document.getElementById('expRecurring').checked = !!item.recurring;
+    document.getElementById('expInstallments').value = 1;
+    document.getElementById('installmentsSection').classList.add('hidden');
+    document.getElementById('modalExpense').classList.remove('hidden');
   };
 
   document.getElementById('btnFilterExp').onclick = () => {
-      const dateVal = document.getElementById('filterExpDate').value;
-      const catVal = document.getElementById('filterExpCat').value;
-      updateCategoryTotal();
-      const filtered = currentData.filter(item => (dateVal ? item.date_iso.startsWith(dateVal) : true) && (catVal ? item.subcategory === catVal : true));
-      renderTable(filtered);
+    const dateVal = document.getElementById('filterExpDate').value;
+    const catVal = document.getElementById('filterExpCat').value;
+    updateCategoryTotal();
+    const filtered = currentData.filter(item => (dateVal ? item.date_iso.startsWith(dateVal) : true) && (catVal ? item.subcategory === catVal : true));
+    renderTable(filtered);
   };
 
   document.getElementById('btnClearFilterExp').onclick = () => {
-      document.getElementById('filterExpDate').value = '';
-      document.getElementById('filterExpCat').value = '';
-      updateCategoryTotal();
-      renderTable(currentData);
+    document.getElementById('filterExpDate').value = '';
+    document.getElementById('filterExpCat').value = '';
+    updateCategoryTotal();
+    renderTable(currentData);
   };
 
   document.getElementById('btnNewExp').onclick = () => {
@@ -253,30 +253,33 @@ export async function initExpenses(container, period) {
   document.getElementById('formExpense').onsubmit = async (e) => {
     e.preventDefault();
     try {
-        const form = e.target;
-        const isEdit = form.dataset.id !== "";
-        const id = isEdit ? parseInt(form.dataset.id) : null;
-        const subCatVal = subCategory.value === 'Outros' ? subCustom.value : subCategory.value;
-        const amountStr = document.getElementById('expAmount').value;
-        const amount = parseFloat(amountStr.replace(/\./g, '').replace(',', '.'));
-        if(isNaN(amount)) return showToast("Valor inválido!", "error");
-        
-        const recurring = document.getElementById('expRecurring').checked ? 1 : 0;
-        const installments = parseInt(document.getElementById('expInstallments').value) || 1;
-        
-        const payload = { 
-            main_type: mainType.value, subcategory: subCatVal, amount: amount, 
-            date_iso: document.getElementById('expDate').value, recurring,
-            total_installments: installments > 1 ? installments : null
-        };
-        
-        if(isEdit) await invokeSafe('update_expense', { id: id, payload: payload });
-        else await invokeSafe('add_expense', { payload: payload });
-        
-        showToast(`Despesa ${isEdit ? 'atualizada' : 'salva'} com sucesso!`, 'success');
-        document.getElementById('modalExpense').classList.add('hidden');
-        loadData(currentPage);
-    } catch(err) { showToast("Falha ao salvar: " + err, 'error'); }
+      const form = e.target;
+      const isEdit = form.dataset.id !== "";
+      const id = isEdit ? parseInt(form.dataset.id) : null;
+      const subCatVal = subCategory.value === 'Outros' ? subCustom.value : subCategory.value;
+      const amountStr = document.getElementById('expAmount').value;
+      const amount = parseFloat(amountStr.replace(/\./g, '').replace(',', '.'));
+      if (isNaN(amount)) return showToast("Valor inválido!", "error");
+
+      const recurring = document.getElementById('expRecurring').checked ? 1 : 0;
+      const installments = parseInt(document.getElementById('expInstallments').value) || 1;
+
+      const payload = {
+        main_type: mainType.value, subcategory: subCatVal, amount: amount,
+        date_iso: document.getElementById('expDate').value, recurring,
+        total_installments: installments > 1 ? installments : null
+      };
+
+      if (isEdit) await invokeSafe('update_expense', { id: id, payload: payload });
+      else await invokeSafe('add_expense', { payload: payload });
+
+      // Dispara geração imediata para o período atual (caso seja recorrente)
+      await invokeSafe('generate_recurring', { month: period.month, year: period.year }).catch(() => { });
+
+      showToast(`Despesa ${isEdit ? 'atualizada' : 'salva'} com sucesso!`, 'success');
+      document.getElementById('modalExpense').classList.add('hidden');
+      loadData(currentPage);
+    } catch (err) { showToast("Falha ao salvar: " + err, 'error'); }
   };
 
   loadData();
