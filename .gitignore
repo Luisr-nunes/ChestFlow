@@ -1,12 +1,29 @@
-# Dependências JavaScript
+# Dependency directories
 node_modules/
 
-# Build do Rust
+# Build outputs
+dist/
+dist-electron/
 src-tauri/target/
 
-# Build do Vite
-dist/
+# WebView2 Binaries (Heavy files)
+src-tauri/WebView2/
+src-tauri/temp_web/
 
-# Variáveis de ambiente
-.env
-.env.local
+# Database files
+*.db
+*.db-shm
+*.db-wal
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.bak
+
+# Production resources
+src-tauri/target/release/

@@ -1,3 +1,3 @@
 fn main() {
-  tauri_build::build()
+    // Backend Axum não precisa do tauri-build
 }
