@@ -9,7 +9,8 @@
     </head>
     <body>
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar__header">
+            <div class="sidebar__header" style="display: flex; align-items: center; gap: 10px;">
+                <img src="/assets/icons/icon.png" alt="Logo" class="sidebar__logo" style="width: 28px; height: 28px; object-fit: contain; pointer-events: none;" />
                 <span class="sidebar__title">ChestFlow</span>
                 <button id="toggleSidebar" class="toggle-btn" title="Recolher Menu">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
@@ -61,7 +62,7 @@
                 <section id="expenses" class="page hidden"></section>
                 <section id="investments" class="page hidden"></section>
                 <section id="reports" class="page hidden">
-                    <div class="page-header"><h3>Relatórios e Backup</h3></div>
+                    <div class="page-header"></div>
                     <div class="card">
                         <p style="margin-bottom: 20px; color: var(--text-light);">Exporte seus dados para backup.</p>
                         <button id="btnExportCSV" class="btn btn-primary">Baixar Excel (CSV)</button>

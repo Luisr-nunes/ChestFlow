@@ -25,7 +25,8 @@
     white-space: nowrap; transition: opacity 0.2s; overflow: hidden;
     color: #FFFFFF;
 }
-.sidebar.collapsed .sidebar__title { width: 0; opacity: 0; margin: 0; }
+.sidebar.collapsed .sidebar__title, .sidebar.collapsed .sidebar__logo { width: 0; height: 0; opacity: 0; margin: 0; display: none; }
+.sidebar.collapsed .sidebar__header { gap: 0 !important; }
 
 .toggle-btn {
     background: rgba(255,255,255,0.15); border: none; color: #fff;
@@ -83,13 +84,34 @@ html[data-theme="light"] .nav-btn.active { color: var(--text-main); }
 .main-header { padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
 .main-header__title { margin: 0; font-size: 1.5rem; font-weight: 700; }
 .main-header__controls { display: flex; gap: 10px; }
-.page-content { flex-grow: 1; overflow-y: auto; padding: 0 40px 40px 40px; }
+.page-content { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; padding: 20px 40px 20px 40px; }
+.page { animation: pageFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1); flex: 1; display: flex; flex-direction: column; }
+@keyframes pageFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
 /* ─── Grids ───────────────────────────────────────────────── */
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-.bottom-section { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; height: 450px; margin-bottom: 30px; }
-.chart-container, .recent-container { height: 100%; display: flex; flex-direction: column; overflow: hidden; }
-.chart-wrapper { flex-grow: 1; position: relative; width: 100%; height: 100%; }
+.stats-grid { display: flex; gap: 12px; margin-bottom: 20px; align-items: stretch; flex-wrap: wrap; }
+
+/* Dashboard main: left (chart + donuts) / right (recentes) */
+.dashboard-main { display: grid; grid-template-columns: 3fr 2fr; gap: 20px; flex: 1; min-height: 0; }
+.dashboard-left { display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+.dashboard-right { display: flex; flex-direction: column; min-height: 0; }
+.dashboard-right .recent-container { flex: 1; min-height: 0; overflow: hidden; }
+
+/* Chart — no card background, blends with page */
+.chart-container { flex: 1.2; display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+.chart-wrapper { flex: 1; position: relative; width: 100%; min-height: 0; }
+
+/* Donut row */
+.donuts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; flex: 1; min-height: 0; }
+.donut-card { padding: 14px; display: flex; flex-direction: column; min-height: 0; height: auto; }
+.donut-card .recent-title { font-size: 0.8rem; margin-bottom: 8px; flex-shrink: 0; }
+.donut-wrapper { position: relative; flex: 1; width: 100%; min-height: 0; }
+
+/* Recent container */
+.recent-container { display: flex; flex-direction: column; overflow: hidden; }
 
 /* ─── Page header ─────────────────────────────────────────── */
-.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.page-header { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 20px; }

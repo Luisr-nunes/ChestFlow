@@ -53,7 +53,7 @@ input[type="date"]::after {
     transform: translateY(-50%);
     pointer-events: none;
     opacity: 0.6; font-size: 14px;
-    filter: grayscale(1) brightness(var(--calendar-invert));
+    filter: grayscale(1);
 }
 
 input[type="date"]:focus {
@@ -71,7 +71,7 @@ html[data-theme="dark"] ::-webkit-scrollbar-thumb { background: rgba(255,255,255
 html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
 
 /* ─── Value colors ────────────────────────────────────────── */
-.value--in { color: var(--color-green) !important; }
-.value--out { color: var(--color-red) !important; }
+.value--in { color: var(--text-main) !important; font-weight: 600; }
+.value--out { color: var(--text-main) !important; font-weight: 600; }
 .value-positive { color: var(--color-green) !important; }
 .value-negative { color: var(--color-red) !important; }

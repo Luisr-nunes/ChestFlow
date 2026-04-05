@@ -8,7 +8,7 @@ export const EXPENSE_CATEGORIES = {
     'Fixa': [
         'Aluguel', 'Energia', 'Água', 'Internet', 'Condomínio',
         'Faculdade', 'Seguro', 'Plano de Saúde', 'Academia',
-        'Anticoncepcional', 'Parcelamento', 'Empréstimo',
+        'Anticoncepcional', 'Parcelamento', 'Empréstimo', 'Financiamento',
         'Feira', 'Streaming', 'Cota Trabalho', 'Outros'
     ],
     'Variavel': [
@@ -55,6 +55,7 @@ export const CATEGORIES_CONFIG = {
     'Anticoncepcional': { color: '#d63031' },
     'Parcelamento': { color: '#95a5a6' },
     'Empréstimo': { color: '#7f8c8d' },
+    'Financiamento': { color: '#8e44ad' },
     'Cota Trabalho': { color: '#34495e' },
     'Faculdade': { color: '#2980b9' },
 

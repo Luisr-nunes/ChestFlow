@@ -74,7 +74,6 @@ export async function initRevenues(container, period) {
 
   container.innerHTML = `
     <div class="page-header">
-      <h3>Receitas</h3>
       <button id="btnNewRev" class="btn btn-primary">Nova Receita</button>
     </div>
     
@@ -114,7 +113,7 @@ export async function initRevenues(container, period) {
           </div>
           
           <div class="modal-actions">
-            <button type="button" id="btnCancelRev" class="btn">Cancelar</button>
+            <button type="button" id="btnCancelRev" class="btn btn-danger">Cancelar</button>
             <button type="submit" class="btn btn-primary">Salvar</button>
           </div>
         </form>

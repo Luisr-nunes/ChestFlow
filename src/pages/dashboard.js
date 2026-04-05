@@ -9,50 +9,51 @@ export async function initDashboard(container, period) {
     container.innerHTML = `
         <div class="stats-grid">
             <div class="card stat-card stat-card--receita">
-                <p class="stat-card__label">Receita</p>
                 <p id="dashboardReceita" class="stat-card__value">R$ 0,00</p>
-            </div>
-            <div class="card stat-card stat-card--despesas">
-                <p class="stat-card__label">Despesas</p>
-                <p id="dashboardDespesas" class="stat-card__value">R$ 0,00</p>
+                <p class="stat-card__label">Receita</p>
             </div>
             <div class="card stat-card stat-card--investido">
-                <p class="stat-card__label">Investido</p>
                 <p id="dashboardInvestimentos" class="stat-card__value">R$ 0,00</p>
+                <p class="stat-card__label">Investimentos</p>
+            </div>
+            <div class="card stat-card stat-card--despesas">
+                <p id="dashboardDespesas" class="stat-card__value">R$ 0,00</p>
+                <p class="stat-card__label">Despesas</p>
             </div>
             <div class="card stat-card stat-card--saldo">
-                <p class="stat-card__label">Saldo</p>
                 <p id="dashboardSaldo" class="stat-card__value">R$ 0,00</p>
+                <p class="stat-card__label">Saldo</p>
+            </div>
+            <div class="card safe-to-spend-card">
+                <div class="safe-to-spend-card__info">
+                    <p id="safeToSpendValue" class="stat-card__value value">R$ 0,00</p>
+                    <h4>Seguro Gastar</h4>
+                </div>
+                <button id="configEconomiaBtn" class="btn btn-primary">Configurar Meta</button>
             </div>
         </div>
 
-        <div class="card safe-to-spend-card">
-            <div class="safe-to-spend-card__info">
-                <h4>Seguro para Gastar</h4>
-                <p id="safeToSpendValue" class="value">R$ 0,00</p>
+        <div class="dashboard-main">
+            <div class="dashboard-left">
+                <div class="chart-container">
+                    <div class="chart-wrapper"><canvas id="monthlyHistoryChart"></canvas></div>
+                </div>
+                <div class="donuts-row">
+                    <div class="card donut-card">
+                        <h3 class="recent-title">Composição das Despesas</h3>
+                        <div class="donut-wrapper"><canvas id="expensePieChart"></canvas></div>
+                    </div>
+                    <div class="card donut-card">
+                        <h3 class="recent-title">Detalhamento de Despesas</h3>
+                        <div class="donut-wrapper"><canvas id="revenuePieChart"></canvas></div>
+                    </div>
+                </div>
             </div>
-            <button id="configEconomiaBtn" class="btn btn-primary">Configurar Meta</button>
-        </div>
-
-        <div class="bottom-section">
-            <div class="card chart-container">
-                <h3 class="recent-title">Fluxo de Caixa</h3>
-                <div class="chart-wrapper"><canvas id="monthlyHistoryChart"></canvas></div>
-            </div>
-            <div class="card recent-container">
-                <h3 class="recent-title">Recentes</h3>
-                <div id="recentTransactionsList"></div>
-            </div>
-        </div>
-
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:40px">
-            <div class="card" style="height:340px;padding:20px;display:flex;flex-direction:column">
-                <h3 class="recent-title">Composição das Despesas</h3>
-                <div style="position:relative;height:240px;width:100%"><canvas id="expensePieChart"></canvas></div>
-            </div>
-            <div class="card" style="height:340px;padding:20px;display:flex;flex-direction:column">
-                <h3 class="recent-title">Detalhamento de Despesas</h3>
-                <div style="position:relative;height:240px;width:100%"><canvas id="revenuePieChart"></canvas></div>
+            <div class="dashboard-right">
+                <div class="card recent-container">
+                    <h3 class="recent-title">Lançamentos Recentes</h3>
+                    <div id="recentTransactionsList"></div>
+                </div>
             </div>
         </div>
     `;
@@ -90,28 +91,37 @@ function initCharts() {
     const style = getComputedStyle(document.body);
     const colorText = '#FFFFFF';
     const gridColor = 'rgba(255,255,255,0.1)';
-    const cardBg = style.getPropertyValue('--bg-card').trim() || '#2D3250';
+    const cardBg = style.getPropertyValue('--bg-card').trim() || '#2d5d9f';
+
+    const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+    const textColor = isDark ? '#FFFFFF' : '#162751';
 
     const doughnutOptions = {
         responsive: true, maintainAspectRatio: false, cutout: '65%',
         plugins: {
-            legend: { position: 'bottom', labels: { color: colorText, usePointStyle: true, boxWidth: 8, font: { family: "'Raleway', sans-serif", size: 12 } } }
+            legend: { position: 'bottom', labels: { color: textColor, usePointStyle: true, pointStyle: 'circle', boxWidth: 8, font: { family: "'Raleway', sans-serif", size: 11 }, padding: 10 } }
         }
     };
+
+    const allMonths = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 
     const ctxHist = document.getElementById('monthlyHistoryChart')?.getContext('2d');
     if (ctxHist) {
         if (monthlyHistoryChart) monthlyHistoryChart.destroy();
         monthlyHistoryChart = new Chart(ctxHist, {
             type: 'bar',
-            data: { labels: [], datasets: [
-                { label: 'Receita', data: [], backgroundColor: '#04930e', borderRadius: 4 },
-                { label: 'Saídas', data: [], backgroundColor: '#bf8441', borderRadius: 4 }
+            data: { labels: allMonths, datasets: [
+                { label: 'Receitas', data: new Array(12).fill(0), backgroundColor: '#2d5d9f', borderRadius: 4 },
+                { label: 'Despesas', data: new Array(12).fill(0), backgroundColor: '#ae8df5', borderRadius: 4 }
             ]},
             options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', align: 'center', labels: { color: textColor, usePointStyle: true, pointStyle: 'circle', boxWidth: 8, font: { family: "'Raleway', sans-serif", size: 12 }, padding: 15 } }
+                },
                 scales: {
-                    x: { grid: { display: false }, ticks: { color: colorText, font: { family: "'Raleway', sans-serif" } } },
-                    y: { grid: { color: gridColor }, ticks: { color: colorText, font: { family: "'Raleway', sans-serif" } } }
+                    x: { grid: { display: false }, ticks: { color: textColor, font: { family: "'Raleway', sans-serif", size: 11 } } },
+                    y: { grid: { color: gridColor }, ticks: { color: textColor, font: { family: "'Raleway', sans-serif", size: 11 } } }
                 }
             }
         });
@@ -122,7 +132,7 @@ function initCharts() {
         if (expensePieChart) expensePieChart.destroy();
         expensePieChart = new Chart(ctxPieExp, {
             type: 'doughnut',
-            data: { labels: ['Fixas', 'Variáveis', 'Adicionais'], datasets: [{ data: [0,0,0], backgroundColor: ['#bf8441','#8d534a','#676F9D'], borderColor: cardBg }] },
+            data: { labels: ['Fixas', 'Variáveis', 'Adicionais'], datasets: [{ data: [0,0,0], backgroundColor: ['#ae8df5','#7c5cbf','#5a3d99'], borderColor: cardBg }] },
             options: doughnutOptions
         });
     }
@@ -167,7 +177,7 @@ async function updateDashboard(period) {
         if (safeEl) {
             const safe = saldo - meta;
             safeEl.textContent = fmtMoney(safe);
-            safeEl.className = 'value ' + (safe >= 0 ? 'value-positive' : 'value-negative');
+            safeEl.className = 'stat-card__value value';
         }
 
         const fixas = expenses.filter(e => e.main_type === 'Fixa').reduce((a, b) => a + b.amount, 0);
@@ -212,11 +222,20 @@ async function updateDashboard(period) {
                     </div>`).join('');
         }
 
-        if (monthlyHistoryChart && history.length) {
-            const labels = { 1:'Jan',2:'Fev',3:'Mar',4:'Abr',5:'Mai',6:'Jun',7:'Jul',8:'Ago',9:'Set',10:'Out',11:'Nov',12:'Dez' };
-            monthlyHistoryChart.data.labels = history.map(h => labels[h.mes]);
-            monthlyHistoryChart.data.datasets[0].data = history.map(h => h.receita);
-            monthlyHistoryChart.data.datasets[1].data = history.map(h => h.despesa);
+        if (monthlyHistoryChart) {
+            const receitas = new Array(12).fill(0);
+            const despesas = new Array(12).fill(0);
+            if (history && history.length) {
+                history.forEach(h => {
+                    const idx = h.mes - 1;
+                    if (idx >= 0 && idx < 12) {
+                        receitas[idx] = h.receita || 0;
+                        despesas[idx] = h.despesa || 0;
+                    }
+                });
+            }
+            monthlyHistoryChart.data.datasets[0].data = receitas;
+            monthlyHistoryChart.data.datasets[1].data = despesas;
             monthlyHistoryChart.update();
         }
     } catch (err) { console.error('Dashboard error:', err); }

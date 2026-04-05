@@ -58,7 +58,7 @@ export async function initExpenses(container, period) {
       } else if (r.recurring_source_id) {
         badge = `<span class="badge-generated" title="Gerado automaticamente">↻</span>`;
       } else if (r.total_installments > 1) {
-        badge = `<span class="badge-generated" style="background:rgba(52,152,219,0.1);color:#3498db"># ${r.installment_number}/${r.total_installments}</span>`;
+        badge = `<span class="badge-generated"># ${r.installment_number}/${r.total_installments}</span>`;
       }
 
       return `
@@ -94,7 +94,6 @@ export async function initExpenses(container, period) {
 
   container.innerHTML = `
     <div class="page-header">
-      <h3>Despesas</h3>
       <button id="btnNewExp" class="btn btn-primary">Nova Despesa</button>
     </div>
 
@@ -148,7 +147,7 @@ export async function initExpenses(container, period) {
           </div>
 
           <div class="modal-actions">
-            <button type="button" id="btnCancelExp" class="btn">Cancelar</button>
+            <button type="button" id="btnCancelExp" class="btn btn-danger">Cancelar</button>
             <button type="submit" class="btn btn-primary">Salvar</button>
           </div>
         </form>

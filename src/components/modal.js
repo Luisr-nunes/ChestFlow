@@ -25,13 +25,13 @@ export function showConfirmModal(item, onConfirm) {
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <button id="btnOnlyThis" class="btn" style="background: var(--color-red); color: white !important;">Apenas este mês</button>
                 <button id="btnAllFuture" class="btn" style="background: var(--color-primary); color: #2D3250 !important;">Este e todos os futuros</button>
-                <button id="btnCancelModal" class="btn" style="background: var(--color-blue); color: white !important;">Cancelar</button>
+                <button id="btnCancelModal" class="btn btn-danger">Cancelar</button>
             </div>
         `;
     } else {
         buttons = `
             <div style="display: flex; gap: 12px; justify-content: flex-end;">
-                <button id="btnCancelModal" class="btn" style="background: var(--color-blue); color: white !important;">Cancelar</button>
+                <button id="btnCancelModal" class="btn btn-danger">Cancelar</button>
                 <button id="btnConfirmDelete" class="btn" style="background: var(--color-red); color: white !important;">Excluir</button>
             </div>
         `;

@@ -9,21 +9,21 @@
     --border-radius: 12px;
 
     /* Tema padrão: escuro */
-    --bg-page: #1a1c2c;
-    --bg-card: #2D3250;
+    --bg-page: #212631;
+    --bg-card: #2d5d9f;
     --text-main: #FFFFFF;
-    --text-light: #bf8441;
-    --border-color: #424769;
-    --bg-hover: #424769;
+    --text-light: #ae8df5;
+    --border-color: #3a4a7a;
+    --bg-hover: #3a4a7a;
 
-    --sidebar-bg: #2D3250;
+    --sidebar-bg: #162751;
     --sidebar-text: #FFFFFF;
 
-    --color-primary: #bf8441;
-    --color-green: #04930e;
-    --color-red: #ef4444;
-    --color-blue: #424769;
-    --color-purple: #676F9D;
+    --color-primary: #ae8df5;
+    --color-green: #7ED957;
+    --color-red: #FF6B6B;
+    --color-blue: #2d5d9f;
+    --color-purple: #ae8df5;
 
     --sidebar-width: 260px;
     --sidebar-collapsed-width: 80px;
@@ -34,24 +34,24 @@
 
 /* Tema escuro explícito */
 html[data-theme="dark"] {
-    --bg-page: #141624;
-    --bg-card: #2D3250;
+    --bg-page: #212631;
+    --bg-card: #2d5d9f;
     --text-main: #FFFFFF;
-    --text-light: #bf8441;
-    --border-color: #424769;
-    --sidebar-bg: #0a0c14;
+    --text-light: #ae8df5;
+    --border-color: #3a4a7a;
+    --sidebar-bg: #162751;
     --calendar-invert: 1;
 }
 
 /* Tema claro */
 html[data-theme="light"] {
-    --bg-page: #f0f2f5;
+    --bg-page: #f0f1f5;
     --bg-card: #ffffff;
-    --text-main: #1a1c2c;
-    --text-light: #8b6d3c;
-    --border-color: #e0e0e0;
-    --bg-hover: #f5f5f5;
-    --sidebar-bg: #2D3250;
+    --text-main: #162751;
+    --text-light: #5a6a8a;
+    --border-color: #d0d4e0;
+    --bg-hover: #e4e6ed;
+    --sidebar-bg: #162751;
     --sidebar-text: #FFFFFF;
     --calendar-invert: 0;
 }
