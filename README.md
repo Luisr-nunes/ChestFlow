@@ -10,7 +10,7 @@
 
 <br>
 
-[![Version](https://img.shields.io/badge/version-1.0.0--beta-orange?style=flat-square)](https://github.com/Luisr-nunes/ChestFlow/releases)
+[![Version](https://img.shields.io/badge/version-1.1.0--beta-orange?style=flat-square)](https://github.com/Luisr-nunes/ChestFlow/releases)
 [![Platform](https://img.shields.io/badge/platform-Windows-blue?style=flat-square&logo=windows)](https://github.com/Luisr-nunes/ChestFlow/releases)
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://github.com/Luisr-nunes/ChestFlow/blob/main/LICENSE)
 [![Electron](https://img.shields.io/badge/Electron-desktop-47848F?style=flat-square&logo=electron&logoColor=white)](https://www.electronjs.org)
@@ -22,7 +22,7 @@
 
 ### Download
 
-[![Download ChestFlow v1.1.0](https://img.shields.io/badge/⬇%EF%B8%8F%20%20Download%20ChestFlow%20v1.1.0%20%20|%20%20Windows%2010%2F11%20%E2%80%94%20Grátis-2ea44f?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Luisr-nunes/ChestFlow/releases/download/v1.0.0/ChestFlow.Setup.1.1.0.exe)
+[![Download ChestFlow v1.1.0](https://img.shields.io/badge/⬇%EF%B8%8F%20%20Download%20ChestFlow%20v1.1.0%20%20|%20%20Windows%2010%2F11%20%E2%80%94%20Grátis-2ea44f?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Luisr-nunes/ChestFlow/releases/download/v1.1.0/ChestFlow.Setup.1.1.0.exe)
 
 > Clique no botão acima para baixar direto. Sem cadastro, sem assinatura.
 
@@ -189,7 +189,7 @@ ChestFlow/
 
 ### Download
 
-[![Download ChestFlow v1.1.0](https://img.shields.io/badge/⬇%EF%B8%8F%20%20Download%20ChestFlow%20v1.1.0%20%20|%20%20Windows%2010%2F11%20—%20Free-2ea44f?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Luisr-nunes/ChestFlow/releases/download/v1.0.0/ChestFlow.Setup.1.1.0.exe)
+[![Download ChestFlow v1.1.0](https://img.shields.io/badge/⬇%EF%B8%8F%20%20Download%20ChestFlow%20v1.1.0%20%20|%20%20Windows%2010%2F11%20—%20Free-2ea44f?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Luisr-nunes/ChestFlow/releases/download/v1.1.0/ChestFlow.Setup.1.1.0.exe)
 
 > Click the button above to download directly. No sign-up, no subscription.
 
