@@ -67,6 +67,9 @@ function startRustBackend() {
 }
 
 app.whenReady().then(() => {
+    const dbPath = require('path').join(process.env.APPDATA || '', 'com.chestflow.app', 'controle_pessoal.db');
+    console.log(`[ChestFlow] DB path: ${dbPath}`);
+    console.log(`[ChestFlow] DB exists: ${require('fs').existsSync(dbPath)}`);
     startRustBackend();
     createWindow();
 

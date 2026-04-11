@@ -19,7 +19,11 @@
       "dist/**/*",
       "electron/**/*",
       "assets/**/*",
-      "package.json"
+      "package.json",
+      "!**/*.db",
+      "!**/*.db-shm",
+      "!**/*.db-wal",
+      "!**/*.sqlite"
     ],
     "extraResources": [
       {
