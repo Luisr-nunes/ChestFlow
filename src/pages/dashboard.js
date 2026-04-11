@@ -5,6 +5,9 @@ import { getCategoryConfig } from '../config/categories.js';
 
 let monthlyHistoryChart, expensePieChart, revenuePieChart;
 
+// Paleta para o gráfico de anéis concêntricos — segue o design system
+const RING_COLORS = ['#a78bfa', '#60a5fa', '#f87171', '#fb923c', '#fbbf24'];
+
 export async function initDashboard(container, period) {
     container.innerHTML = `
         <div class="stats-grid">
@@ -88,18 +91,28 @@ export async function initDashboard(container, period) {
 }
 
 function initCharts() {
-    const style = getComputedStyle(document.body);
-    const colorText = '#FFFFFF';
-    const gridColor = 'rgba(255,255,255,0.1)';
-    const cardBg = style.getPropertyValue('--bg-card').trim() || '#2d5d9f';
+    const style = getComputedStyle(document.documentElement);
+    const cardBg = style.getPropertyValue('--bg-card').trim() || '#252f46';
+    const borderCol = style.getPropertyValue('--border-color').trim() || '#2e3d5c';
 
     const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-    const textColor = isDark ? '#FFFFFF' : '#162751';
+    const textColor  = isDark ? '#e8eaf2' : '#1a2540';
+    const gridColor  = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)';
+
+    const brl = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
     const doughnutOptions = {
-        responsive: true, maintainAspectRatio: false, cutout: '65%',
+        responsive: true, maintainAspectRatio: false, cutout: '68%',
         plugins: {
-            legend: { position: 'bottom', labels: { color: textColor, usePointStyle: true, pointStyle: 'circle', boxWidth: 8, font: { family: "'Raleway', sans-serif", size: 11 }, padding: 10 } }
+            legend: {
+                position: 'bottom',
+                labels: { color: textColor, usePointStyle: true, pointStyle: 'circle', boxWidth: 8, font: { family: "'Raleway', sans-serif", size: 11 }, padding: 12 }
+            },
+            tooltip: {
+                callbacks: {
+                    label: (ctx) => ` ${ctx.label}: ${brl(ctx.parsed)}`
+                }
+            }
         }
     };
 
@@ -111,17 +124,49 @@ function initCharts() {
         monthlyHistoryChart = new Chart(ctxHist, {
             type: 'bar',
             data: { labels: allMonths, datasets: [
-                { label: 'Receitas', data: new Array(12).fill(0), backgroundColor: '#2d5d9f', borderRadius: 4 },
-                { label: 'Despesas', data: new Array(12).fill(0), backgroundColor: '#ae8df5', borderRadius: 4 }
+                {
+                    label: 'Receitas',
+                    data: new Array(12).fill(0),
+                    backgroundColor: 'rgba(167,139,250,0.85)',
+                    hoverBackgroundColor: '#a78bfa',
+                    borderRadius: { topLeft: 5, topRight: 5 },
+                    borderSkipped: 'start',
+                    barPercentage: 0.45,
+                    categoryPercentage: 0.8,
+                },
+                {
+                    label: 'Despesas',
+                    data: new Array(12).fill(0),
+                    backgroundColor: 'rgba(248,113,113,0.80)',
+                    hoverBackgroundColor: '#f87171',
+                    borderRadius: { topLeft: 5, topRight: 5 },
+                    borderSkipped: 'start',
+                    barPercentage: 0.45,
+                    categoryPercentage: 0.8,
+                }
             ]},
             options: {
                 responsive: true, maintainAspectRatio: false,
                 plugins: {
-                    legend: { position: 'top', align: 'center', labels: { color: textColor, usePointStyle: true, pointStyle: 'circle', boxWidth: 8, font: { family: "'Raleway', sans-serif", size: 12 }, padding: 15 } }
+                    legend: {
+                        position: 'top', align: 'center',
+                        labels: { color: textColor, usePointStyle: true, pointStyle: 'circle', boxWidth: 8, font: { family: "'Raleway', sans-serif", size: 12 }, padding: 16 }
+                    },
+                    tooltip: {
+                        backgroundColor: isDark ? '#1e2d4a' : '#ffffff',
+                        titleColor: textColor,
+                        bodyColor: textColor,
+                        borderColor: isDark ? 'rgba(167,139,250,0.2)' : 'rgba(0,0,0,0.08)',
+                        borderWidth: 1,
+                        padding: 10,
+                        callbacks: {
+                            label: (ctx) => ` ${ctx.dataset.label}: ${brl(ctx.parsed.y)}`
+                        }
+                    }
                 },
                 scales: {
-                    x: { grid: { display: false }, ticks: { color: textColor, font: { family: "'Raleway', sans-serif", size: 11 } } },
-                    y: { grid: { color: gridColor }, ticks: { color: textColor, font: { family: "'Raleway', sans-serif", size: 11 } } }
+                    x: { grid: { display: false }, border: { display: false }, ticks: { color: textColor, font: { family: "'Raleway', sans-serif", size: 11 } } },
+                    y: { grid: { color: gridColor }, border: { display: false }, ticks: { color: textColor, font: { family: "'Raleway', sans-serif", size: 11 }, callback: (v) => brl(v) } }
                 }
             }
         });
@@ -132,8 +177,17 @@ function initCharts() {
         if (expensePieChart) expensePieChart.destroy();
         expensePieChart = new Chart(ctxPieExp, {
             type: 'doughnut',
-            data: { labels: ['Fixas', 'Variáveis', 'Adicionais'], datasets: [{ data: [0,0,0], backgroundColor: ['#ae8df5','#7c5cbf','#5a3d99'], borderColor: cardBg }] },
-            options: doughnutOptions
+            data: {
+                labels: ['Fixas', 'Variáveis', 'Adicionais'],
+                datasets: [{
+                    data: [0, 0, 0],
+                    backgroundColor: ['#a78bfa', '#fb923c', '#60a5fa'],
+                    borderColor: cardBg,
+                    borderWidth: 3,
+                    hoverOffset: 6,
+                }]
+            },
+            options: { ...doughnutOptions, cutout: '60%' }
         });
     }
 
@@ -142,8 +196,45 @@ function initCharts() {
         if (revenuePieChart) revenuePieChart.destroy();
         revenuePieChart = new Chart(ctxPieRev, {
             type: 'doughnut',
-            data: { labels: [], datasets: [{ data: [], backgroundColor: [], borderColor: cardBg }] },
-            options: doughnutOptions
+            data: {
+                labels: [],
+                datasets: [{
+                    data: [],
+                    backgroundColor: [],
+                    borderColor: cardBg,
+                    borderWidth: 3,
+                    hoverOffset: 6,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: textColor,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            boxWidth: 8,
+                            font: { family: "'Raleway', sans-serif", size: 11 },
+                            padding: 10,
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: isDark ? '#1e2d4a' : '#ffffff',
+                        titleColor: textColor,
+                        bodyColor: textColor,
+                        borderColor: isDark ? 'rgba(167,139,250,0.2)' : 'rgba(0,0,0,0.08)',
+                        borderWidth: 1,
+                        padding: 10,
+                        callbacks: {
+                            label: (ctx) => ` ${ctx.label}: ${brl(ctx.parsed)}`
+                        }
+                    }
+                }
+            }
         });
     }
 }
@@ -194,9 +285,10 @@ async function updateDashboard(period) {
         const data = top8.map(d => d.total);
         if (outros > 0) { labels.push('Outros'); data.push(outros); }
         if (revenuePieChart) {
-            revenuePieChart.data.labels = labels;
-            revenuePieChart.data.datasets[0].data = data;
-            revenuePieChart.data.datasets[0].backgroundColor = labels.map(l => l === 'Outros' ? '#95a5a6' : getCategoryConfig(l).color);
+            const top5 = subArr.slice(0, 5);
+            revenuePieChart.data.labels = top5.map(d => d.subcategoria);
+            revenuePieChart.data.datasets[0].data = top5.map(d => d.total);
+            revenuePieChart.data.datasets[0].backgroundColor = top5.map((_, i) => RING_COLORS[i % RING_COLORS.length]);
             revenuePieChart.update();
         }
 

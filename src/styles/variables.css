@@ -2,28 +2,49 @@
    Design Tokens — Variáveis CSS e temas
    ═══════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&display=swap');
 
 :root {
     --font-family: 'Raleway', sans-serif;
-    --border-radius: 12px;
+    --border-radius: 14px;
+
+    /* ─── Border Radii ─── */
+    --radius-sm:  6px;
+    --radius-md:  10px;
+    --radius-lg:  14px;
+    --radius-xl:  20px;
+
+    /* ─── Shadows ─── */
+    --shadow-sm:  0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+    --shadow-md:  0 4px 16px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.10);
+    --shadow-lg:  0 12px 36px rgba(0,0,0,0.25), 0 4px 12px rgba(0,0,0,0.12);
+    --shadow-xl:  0 24px 60px rgba(0,0,0,0.35), 0 8px 20px rgba(0,0,0,0.15);
 
     /* Tema padrão: escuro */
-    --bg-page: #212631;
-    --bg-card: #2d5d9f;
-    --text-main: #FFFFFF;
-    --text-light: #ae8df5;
-    --border-color: #3a4a7a;
-    --bg-hover: #3a4a7a;
+    --bg-page:    #1c2232;
+    --bg-card:    #252f46;
+    --bg-card-2:  #2a3552;
+    --text-main:  #e8eaf2;
+    --text-light: #8fa0c0;
+    --border-color: #2e3d5c;
+    --bg-hover:   #2e3d5c;
 
-    --sidebar-bg: #162751;
+    --sidebar-bg:   #151e33;
     --sidebar-text: #FFFFFF;
 
-    --color-primary: #ae8df5;
-    --color-green: #7ED957;
-    --color-red: #FF6B6B;
-    --color-blue: #2d5d9f;
-    --color-purple: #ae8df5;
+    --color-primary: #a78bfa;
+    --color-green:   #34d399;
+    --color-red:     #f87171;
+    --color-blue:    #60a5fa;
+    --color-orange:  #fb923c;
+    --color-purple:  #a78bfa;
+    --color-yellow:  #fbbf24;
+
+    /* ─── Gradient accents ─── */
+    --gradient-primary:    linear-gradient(135deg, #a78bfa,  #7c3aed);
+    --gradient-green:      linear-gradient(135deg, #34d399,  #059669);
+    --gradient-red:        linear-gradient(135deg, #f87171,  #dc2626);
+    --gradient-blue:       linear-gradient(135deg, #60a5fa,  #2563eb);
 
     --sidebar-width: 260px;
     --sidebar-collapsed-width: 80px;
@@ -32,26 +53,34 @@
     --calendar-invert: 1;
 }
 
-/* Tema escuro explícito */
+/* ─── Tema escuro explícito ─── */
 html[data-theme="dark"] {
-    --bg-page: #212631;
-    --bg-card: #2d5d9f;
-    --text-main: #FFFFFF;
-    --text-light: #ae8df5;
-    --border-color: #3a4a7a;
-    --sidebar-bg: #162751;
+    --bg-page:      #1c2232;
+    --bg-card:      #252f46;
+    --bg-card-2:    #2a3552;
+    --text-main:    #e8eaf2;
+    --text-light:   #8fa0c0;
+    --border-color: #2e3d5c;
+    --bg-hover:     #2e3d5c;
+    --sidebar-bg:   #151e33;
     --calendar-invert: 1;
 }
 
-/* Tema claro */
+/* ─── Tema claro ─── */
 html[data-theme="light"] {
-    --bg-page: #f0f1f5;
-    --bg-card: #ffffff;
-    --text-main: #162751;
-    --text-light: #5a6a8a;
-    --border-color: #d0d4e0;
-    --bg-hover: #e4e6ed;
-    --sidebar-bg: #162751;
+    --bg-page:      #f1f3f8;
+    --bg-card:      #ffffff;
+    --bg-card-2:    #f8f9fc;
+    --text-main:    #1a2540;
+    --text-light:   #5a6b8a;
+    --border-color: #dde2ef;
+    --bg-hover:     #edf0f8;
+    --sidebar-bg:   #151e33;
     --sidebar-text: #FFFFFF;
     --calendar-invert: 0;
+
+    --shadow-sm:  0 1px 4px rgba(22,39,81,0.08), 0 1px 2px rgba(22,39,81,0.04);
+    --shadow-md:  0 4px 16px rgba(22,39,81,0.10), 0 2px 6px rgba(22,39,81,0.05);
+    --shadow-lg:  0 12px 36px rgba(22,39,81,0.13), 0 4px 12px rgba(22,39,81,0.06);
+    --shadow-xl:  0 24px 60px rgba(22,39,81,0.16), 0 8px 20px rgba(22,39,81,0.08);
 }

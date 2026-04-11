@@ -2,37 +2,35 @@ export function showConfirmModal(item, onConfirm) {
     const isRecurring = item.recurring === 1 || item.recurring_source_id !== null;
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay';
-    overlay.style.cssText = `
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.6); display: flex; align-items: center;
-        justify-content: center; z-index: 10000; animation: fadeIn 0.2s ease;
-    `;
 
     const modal = document.createElement('div');
-    modal.className = 'confirm-modal';
-    modal.style.cssText = `
-        background: var(--bg-card); color: var(--text-main);
-        padding: 24px; border-radius: 12px; max-width: 400px; width: 90%;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2); animation: scaleUp 0.2s ease;
-    `;
+    modal.className = 'modal-content confirm-modal';
+    // Override width for compact confirm dialog
+    modal.style.cssText = 'width: 420px; max-width: 92vw;';
 
-    let content = `<h3>Excluir Lançamento?</h3><p style="margin: 12px 0 24px; opacity: 0.8;">Esta ação não pode ser desfeita.</p>`;
+    let content = `
+        <h3 style="margin:0 0 8px 0">Excluir Lançamento?</h3>
+        <p style="margin: 0 0 24px; color: var(--text-light); font-size:0.9rem;">Esta ação não pode ser desfeita.</p>
+    `;
     let buttons = '';
 
     if (isRecurring) {
-        content = `<h3>Excluir Item Recorrente</h3><p style="margin: 12px 0 24px; color: var(--text-main); opacity: 0.8;">Este item faz parte de uma recorrência. Como deseja prosseguir?</p>`;
+        content = `
+            <h3 style="margin:0 0 8px 0">Excluir Item Recorrente</h3>
+            <p style="margin: 0 0 24px; color: var(--text-light); font-size:0.9rem;">Este item faz parte de uma recorrência. Como deseja prosseguir?</p>
+        `;
         buttons = `
             <div style="display: flex; flex-direction: column; gap: 10px;">
-                <button id="btnOnlyThis" class="btn" style="background: var(--color-red); color: white !important;">Apenas este mês</button>
-                <button id="btnAllFuture" class="btn" style="background: var(--color-primary); color: #2D3250 !important;">Este e todos os futuros</button>
-                <button id="btnCancelModal" class="btn btn-danger">Cancelar</button>
+                <button id="btnOnlyThis"   class="btn btn-danger">Apenas este mês</button>
+                <button id="btnAllFuture"  class="btn btn-primary">Este e todos os futuros</button>
+                <button id="btnCancelModal" class="btn btn-secondary">Cancelar</button>
             </div>
         `;
     } else {
         buttons = `
             <div style="display: flex; gap: 12px; justify-content: flex-end;">
-                <button id="btnCancelModal" class="btn btn-danger">Cancelar</button>
-                <button id="btnConfirmDelete" class="btn" style="background: var(--color-red); color: white !important;">Excluir</button>
+                <button id="btnCancelModal" class="btn btn-secondary">Cancelar</button>
+                <button id="btnConfirmDelete" class="btn btn-danger">Excluir</button>
             </div>
         `;
     }
@@ -49,8 +47,8 @@ export function showConfirmModal(item, onConfirm) {
     overlay.querySelector('#btnCancelModal').onclick = close;
 
     if (isRecurring) {
-        overlay.querySelector('#btnOnlyThis').onclick = () => { onConfirm('single'); close(); };
-        overlay.querySelector('#btnAllFuture').onclick = () => { onConfirm('all'); close(); };
+        overlay.querySelector('#btnOnlyThis').onclick  = () => { onConfirm('single'); close(); };
+        overlay.querySelector('#btnAllFuture').onclick = () => { onConfirm('all');    close(); };
     } else {
         overlay.querySelector('#btnConfirmDelete').onclick = () => { onConfirm('single'); close(); };
     }

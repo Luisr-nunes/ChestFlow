@@ -22,7 +22,7 @@
 
 ### Download
 
-[![Download ChestFlow v1.1.0](https://img.shields.io/badge/⬇%EF%B8%8F%20%20Download%20ChestFlow%20v1.1.0%20%20|%20%20Windows%2010%2F11%20%E2%80%94%20Grátis-2ea44f?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Luisr-nunes/ChestFlow/releases/download/v1.1.0/ChestFlow.Setup.1.1.0.exe)
+[![Download ChestFlow v1.1.0](https://img.shields.io/badge/⬇%EF%B8%8F%20%20Download%20ChestFlow%20v1.1.0%20%20|%20%20Windows%2010%2F11%20%E2%80%94%20Grátis-2ea44f?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/Luisr-nunes/ChestFlow/releases/download/v1.2.0/ChestFlow.Setup.1.1.0.exe)
 
 > Clique no botão acima para baixar direto. Sem cadastro, sem assinatura.
 

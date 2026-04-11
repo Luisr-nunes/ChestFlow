@@ -21,13 +21,12 @@ input, select, button {
     color: var(--text-main);
 }
 
-.stat-card__label { color: rgba(255,255,255,0.7); }
-.recent-transaction__date { color: rgba(255,255,255,0.5); }
+.stat-card__label { color: var(--text-light); }
+.recent-transaction__date { color: var(--text-light); }
 .data-table th { color: var(--text-light); }
 
-/* Tema light: ajusta labels que estão dentro de cards brancos */
 html[data-theme="light"] .stat-card__label { color: var(--text-light); }
-html[data-theme="light"] .recent-transaction__date { color: #888; }
+html[data-theme="light"] .recent-transaction__date { color: var(--text-light); }
 
 /* ─── Date input styling ──────────────────────────────────── */
 input[type="date"] {
