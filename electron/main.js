@@ -33,24 +33,32 @@ function startRustBackend() {
     const isDev = process.env.NODE_ENV === 'development';
     let backendPath;
 
+    // Em dev, o banco fica na pasta do projeto (isolado do banco de produção no AppData)
+    const devDbDir = path.join(__dirname, '..');
+    const devEnv = { ...process.env, CHESTFLOW_DB_DIR: devDbDir };
+
     if (isDev) {
         const debugBinary = path.join(__dirname, '..', 'backend', 'target', 'debug', 'chestflow-backend.exe');
         const fs = require('fs');
 
+        console.log(`[ChestFlow] Modo DEV — BD isolado em: ${path.join(devDbDir, 'dev_controle_pessoal.db')}`);
+
         if (fs.existsSync(debugBinary)) {
             console.log("Iniciando backend via binário compilado (Otimizado)");
             backendPath = debugBinary;
-            rustProcess = spawn(backendPath, []);
+            rustProcess = spawn(backendPath, [], { env: devEnv });
         } else {
             console.log("Iniciando backend via cargo run (Lento - Rode 'cargo build' em backend/ para otimizar)");
             backendPath = 'cargo';
             rustProcess = spawn(backendPath, ['run', '--manifest-path', path.join(__dirname, '..', 'backend', 'Cargo.toml')], {
-                shell: true
+                shell: true,
+                env: devEnv
             });
         }
     } else {
         backendPath = path.join(process.resourcesPath, 'backend.exe');
         rustProcess = spawn(backendPath);
+        console.log(`[ChestFlow] Modo PRODUÇÃO — BD em: ${path.join(process.env.APPDATA || '', 'com.chestflow.app', 'controle_pessoal.db')}`);
     }
 
     rustProcess.stdout.on('data', (data) => {
@@ -67,9 +75,6 @@ function startRustBackend() {
 }
 
 app.whenReady().then(() => {
-    const dbPath = require('path').join(process.env.APPDATA || '', 'com.chestflow.app', 'controle_pessoal.db');
-    console.log(`[ChestFlow] DB path: ${dbPath}`);
-    console.log(`[ChestFlow] DB exists: ${require('fs').existsSync(dbPath)}`);
     startRustBackend();
     createWindow();
 

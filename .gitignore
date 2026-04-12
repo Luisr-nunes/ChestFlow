@@ -15,6 +15,7 @@ backend/target/
 *.db
 *.db-shm
 *.db-wal
+dev_controle_pessoal.db
 
 # OS generated files
 .DS_Store

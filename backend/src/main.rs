@@ -21,12 +21,23 @@ async fn main() {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    // Configuração do diretório de dados (compatível com Windows)
-    let app_data_dir = std::env::var("APPDATA").expect("Falha ao obter diretório APPDATA");
-    let data_dir = std::path::Path::new(&app_data_dir).join("com.chestflow.app");
+    // Configuração do diretório de dados
+    // Em dev: CHESTFLOW_DB_DIR aponta para a pasta do projeto (banco isolado)
+    // Em prod: usa %APPDATA%/com.chestflow.app (banco do usuário)
+    let (data_dir, db_name) = if let Ok(dev_dir) = std::env::var("CHESTFLOW_DB_DIR") {
+        println!("[ChestFlow] Modo DEV — banco isolado");
+        (std::path::PathBuf::from(dev_dir), "dev_controle_pessoal.db")
+    } else {
+        let app_data_dir = std::env::var("APPDATA").expect("Falha ao obter diretório APPDATA");
+        let dir = std::path::Path::new(&app_data_dir).join("com.chestflow.app");
+        println!("[ChestFlow] Modo PRODUÇÃO — banco em AppData");
+        (dir, "controle_pessoal.db")
+    };
+
     std::fs::create_dir_all(&data_dir).expect("Falha ao criar diretório de dados");
 
-    let db_path = data_dir.join("controle_pessoal.db");
+    let db_path = data_dir.join(db_name);
+    println!("[ChestFlow] DB path: {}", db_path.display());
     let conn = init_db(db_path.to_str().unwrap()).expect("Falha ao inicializar banco de dados");
     
     let shared_state = Arc::new(Mutex::new(conn));
