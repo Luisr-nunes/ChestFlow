@@ -81,13 +81,23 @@ pub async fn delete_revenue_http(db: Db, Json(params): Json<DeleteParams>) -> Re
 
 pub async fn list_expenses_http(db: Db, Json(params): Json<ListParams>) -> Result<impl IntoResponse, (StatusCode, String)> {
     let conn = db.lock().map_err(|_| (StatusCode::INTERNAL_SERVER_ERROR, "Lock do banco envenenado".to_string()))?;
-    let res = list_expenses_db(&conn, params.month, params.year, params.page.unwrap_or(1), params.page_size.unwrap_or(20)).map_err(db_error)?;
+    let res = list_expenses_db(
+        &conn, params.month, params.year,
+        params.page.unwrap_or(1), params.page_size.unwrap_or(20),
+        params.filter_subcategory.as_deref(), params.filter_date.as_deref()
+    ).map_err(db_error)?;
     Ok(Json(res))
 }
 
 pub async fn get_category_total_http(db: Db, Json(params): Json<CategoryTotalParams>) -> Result<impl IntoResponse, (StatusCode, String)> {
     let conn = db.lock().map_err(|_| (StatusCode::INTERNAL_SERVER_ERROR, "Lock do banco envenenado".to_string()))?;
     let res = get_category_total_db(&conn, params.month, params.year, params.subcategory).map_err(db_error)?;
+    Ok(Json(res))
+}
+
+pub async fn list_expense_categories_http(db: Db, Json(params): Json<PeriodParams>) -> Result<impl IntoResponse, (StatusCode, String)> {
+    let conn = db.lock().map_err(|_| (StatusCode::INTERNAL_SERVER_ERROR, "Lock do banco envenenado".to_string()))?;
+    let res = list_expense_categories_db(&conn, params.month, params.year).map_err(db_error)?;
     Ok(Json(res))
 }
 

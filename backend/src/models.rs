@@ -87,6 +87,8 @@ pub struct ListParams {
     pub year: i32,
     pub page: Option<u32>,
     pub page_size: Option<u32>,
+    pub filter_subcategory: Option<String>,
+    pub filter_date: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

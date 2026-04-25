@@ -74,6 +74,7 @@ async fn main() {
         .route("/update_expense", post(commands::update_expense_http))
         .route("/delete_expense", post(commands::delete_expense_http))
         .route("/get_category_total", post(commands::get_category_total_http))
+        .route("/list_expense_categories", post(commands::list_expense_categories_http))
         // Investments
         .route("/list_investments", post(commands::list_investments_http))
         .route("/add_investment", post(commands::add_investment_http))

@@ -8,31 +8,38 @@ import { EXPENSE_CATEGORIES } from '../config/categories.js';
 let currentData = [];
 let currentPage = 1;
 let totalPages = 1;
+let activeFilterSubcategory = '';
+let activeFilterDate = '';
 
 export async function initExpenses(container, period) {
   const loadData = async (page = 1) => {
     try {
-      const res = await invokeSafe('list_expenses', { month: period.month, year: period.year, page, page_size: 20 });
+      const params = { month: period.month, year: period.year, page, page_size: 20 };
+      if (activeFilterSubcategory) params.filter_subcategory = activeFilterSubcategory;
+      if (activeFilterDate) params.filter_date = activeFilterDate;
+
+      const res = await invokeSafe('list_expenses', params);
       currentData = res.data;
       currentPage = res.page;
       totalPages = res.total_pages;
-      updateCategoryFilter();
       renderTable(currentData);
       renderPagination(res);
       updateCategoryTotal();
     } catch (err) { console.error(err); }
   };
 
-  const updateCategoryFilter = () => {
+  const loadCategoryFilter = async () => {
     const select = document.getElementById('filterExpCat');
     const currentVal = select.value;
-    const uniqueCats = [...new Set(currentData.map(item => item.subcategory))].sort();
-    select.innerHTML = '<option value="">Todas Categorias</option>' + uniqueCats.map(c => `<option value="${c}">${c}</option>`).join('');
-    select.value = currentVal;
+    try {
+      const cats = await invokeSafe('list_expense_categories', { month: period.month, year: period.year });
+      select.innerHTML = '<option value="">Todas Categorias</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
+      select.value = currentVal;
+    } catch (err) { console.error(err); }
   };
 
   const updateCategoryTotal = async () => {
-    const catVal = document.getElementById('filterExpCat').value;
+    const catVal = activeFilterSubcategory || document.getElementById('filterExpCat').value;
     const banner = document.getElementById('categoryTotalBanner');
     if (!catVal) {
       banner.classList.add('hidden');
@@ -187,6 +194,7 @@ export async function initExpenses(container, period) {
       try {
         await invokeSafe('delete_expense', { id, mode });
         showToast('Despesa excluída com sucesso!', 'success');
+        await loadCategoryFilter();
         loadData(currentPage);
       } catch (err) { showToast('Erro ao excluir: ' + err, 'error'); }
     });
@@ -226,18 +234,17 @@ export async function initExpenses(container, period) {
   };
 
   document.getElementById('btnFilterExp').onclick = () => {
-    const dateVal = document.getElementById('filterExpDate').value;
-    const catVal = document.getElementById('filterExpCat').value;
-    updateCategoryTotal();
-    const filtered = currentData.filter(item => (dateVal ? item.date_iso.startsWith(dateVal) : true) && (catVal ? item.subcategory === catVal : true));
-    renderTable(filtered);
+    activeFilterDate = document.getElementById('filterExpDate').value;
+    activeFilterSubcategory = document.getElementById('filterExpCat').value;
+    loadData(1);
   };
 
   document.getElementById('btnClearFilterExp').onclick = () => {
     document.getElementById('filterExpDate').value = '';
     document.getElementById('filterExpCat').value = '';
-    updateCategoryTotal();
-    renderTable(currentData);
+    activeFilterDate = '';
+    activeFilterSubcategory = '';
+    loadData(1);
   };
 
   document.getElementById('btnNewExp').onclick = () => {
@@ -279,9 +286,11 @@ export async function initExpenses(container, period) {
 
       showToast(`Despesa ${isEdit ? 'atualizada' : 'salva'} com sucesso!`, 'success');
       document.getElementById('modalExpense').classList.add('hidden');
+      await loadCategoryFilter();
       loadData(currentPage);
     } catch (err) { showToast("Falha ao salvar: " + err, 'error'); }
   };
 
+  await loadCategoryFilter();
   loadData();
 }

@@ -216,6 +216,16 @@ pub fn get_category_total_db(conn: &Connection, month: u32, year: i32, subcatego
     Ok(total)
 }
 
+pub fn list_expense_categories_db(conn: &Connection, month: u32, year: i32) -> Result<Vec<String>> {
+    let m = format!("{:02}", month);
+    let y = format!("{}", year);
+    let mut stmt = conn.prepare(
+        "SELECT DISTINCT subcategory FROM expenses WHERE strftime('%m',date_iso)=?1 AND strftime('%Y',date_iso)=?2 ORDER BY subcategory"
+    )?;
+    let cats = stmt.query_map(params![m, y], |r| r.get(0))?.filter_map(|r| r.ok()).collect();
+    Ok(cats)
+}
+
 pub fn list_revenues_db(conn: &Connection, month: u32, year: i32, page: u32, page_size: u32) -> Result<PaginatedResponse<Revenue>> {
     let m = format!("{:02}", month);
     let y = format!("{}", year);
@@ -241,29 +251,59 @@ pub fn list_revenues_db(conn: &Connection, month: u32, year: i32, page: u32, pag
     Ok(PaginatedResponse { data, total, page, total_pages })
 }
 
-pub fn list_expenses_db(conn: &Connection, month: u32, year: i32, page: u32, page_size: u32) -> Result<PaginatedResponse<Expense>> {
+pub fn list_expenses_db(conn: &Connection, month: u32, year: i32, page: u32, page_size: u32, filter_subcategory: Option<&str>, filter_date: Option<&str>) -> Result<PaginatedResponse<Expense>> {
     let m = format!("{:02}", month);
     let y = format!("{}", year);
     let offset = (page - 1) * page_size;
 
+    // Build dynamic WHERE clause based on active filters
+    let mut where_clause = String::from("WHERE strftime('%m',date_iso)=?1 AND strftime('%Y',date_iso)=?2");
+    let mut count_params: Vec<Box<dyn rusqlite::types::ToSql>> = vec![Box::new(m.clone()), Box::new(y.clone())];
+
+    if let Some(subcat) = filter_subcategory {
+        if !subcat.is_empty() {
+            where_clause.push_str(&format!(" AND subcategory=?{}", count_params.len() + 1));
+            count_params.push(Box::new(subcat.to_string()));
+        }
+    }
+    if let Some(date) = filter_date {
+        if !date.is_empty() {
+            where_clause.push_str(&format!(" AND date_iso=?{}", count_params.len() + 1));
+            count_params.push(Box::new(date.to_string()));
+        }
+    }
+
+    let count_sql = format!("SELECT COUNT(*) FROM expenses {}", where_clause);
     let total: i64 = conn.query_row(
-        "SELECT COUNT(*) FROM expenses WHERE strftime('%m',date_iso)=?1 AND strftime('%Y',date_iso)=?2",
-        params![m, y], |r| r.get(0)
+        &count_sql,
+        rusqlite::params_from_iter(count_params.iter().map(|p| p.as_ref())),
+        |r| r.get(0)
     )?;
 
-    let mut stmt = conn.prepare(
-        "SELECT id, main_type, subcategory, amount, date_iso, recurring, recurring_source_id, total_installments, installment_number 
-         FROM expenses 
-         WHERE strftime('%m',date_iso)=?1 AND strftime('%Y',date_iso)=?2 
-         ORDER BY date_iso DESC, id DESC LIMIT ?3 OFFSET ?4"
-    )?;
-    let data = stmt.query_map(params![m, y, page_size, offset], |r| Ok(Expense {
-        id: r.get(0)?, main_type: r.get(1)?, subcategory: r.get(2)?,
-        amount: r.get(3)?, date_iso: r.get(4)?, recurring: r.get(5)?, 
-        recurring_source_id: r.get(6)?, total_installments: r.get(7)?, installment_number: r.get(8)?,
-    }))?.filter_map(|r| r.ok()).collect();
+    let select_sql = format!(
+        "SELECT id, main_type, subcategory, amount, date_iso, recurring, recurring_source_id, total_installments, installment_number \
+         FROM expenses {} \
+         ORDER BY date_iso DESC, id DESC LIMIT ?{} OFFSET ?{}",
+        where_clause,
+        count_params.len() + 1,
+        count_params.len() + 2
+    );
 
-    let total_pages = (total as f64 / page_size as f64).ceil() as u32;
+    let mut query_params: Vec<Box<dyn rusqlite::types::ToSql>> = count_params.into_iter().collect();
+    query_params.push(Box::new(page_size));
+    query_params.push(Box::new(offset));
+
+    let mut stmt = conn.prepare(&select_sql)?;
+    let data = stmt.query_map(
+        rusqlite::params_from_iter(query_params.iter().map(|p| p.as_ref())),
+        |r| Ok(Expense {
+            id: r.get(0)?, main_type: r.get(1)?, subcategory: r.get(2)?,
+            amount: r.get(3)?, date_iso: r.get(4)?, recurring: r.get(5)?, 
+            recurring_source_id: r.get(6)?, total_installments: r.get(7)?, installment_number: r.get(8)?,
+        })
+    )?.filter_map(|r| r.ok()).collect();
+
+    let total_pages = ((total as f64) / (page_size as f64)).ceil().max(1.0) as u32;
 
     Ok(PaginatedResponse { data, total, page, total_pages })
 }
